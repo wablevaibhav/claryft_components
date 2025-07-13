@@ -7,3 +7,4 @@ export 'ui_helpers.dart';
 export 'package:gap/gap.dart';
 export 'log_helpers.dart';
 export 'responsive.dart';
+export 'progress_bar.dart';
