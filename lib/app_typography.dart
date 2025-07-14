@@ -1,10 +1,11 @@
 import 'package:claryft_components/app_colors.dart';
+import 'package:claryft_components/gen_assets/fonts.gen.dart';
 import 'package:flutter/material.dart';
 
 class AppTypography {
   AppTypography._();
 
-  static const String _fontFamily = 'Inter';
+  static const String _fontFamily = FontFamily.inter;
   static final Color _fontColor = AppColors.textPrimaryColor;
   static final Color _fontHintColor = AppColors.textSecondaryColor;
   static const FontWeight _fontWeight = FontWeight.normal;
