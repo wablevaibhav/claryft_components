@@ -188,7 +188,7 @@ class AppValidations {
     if (value == null || value.isEmpty) {
       return 'Please enter subject';
     }
-    RegExp regExp = RegExp(r'^[a-zA-Z ]*0$');
+    RegExp regExp = RegExp(r'^[a-zA-Z ]*$');
     if (!regExp.hasMatch(value)) {
       return 'Subject can only contain alphabets and spaces';
     }
