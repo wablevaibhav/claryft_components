@@ -18,10 +18,7 @@ class CustomLinearProgressBar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '${(progress * 100).toInt()}%',
-          style: AppTypography.normal.copyWith(fontWeight: FontWeight.w500, fontSize: 12, color: color),
-        ),
+        Text('${(progress * 100).toInt()}%', style: AppTypography.mediumHint.copyWith(fontWeight: FontWeight.w500, color: color)),
         const Gap(4),
         ClipRRect(
           borderRadius: BorderRadius.circular(4),

@@ -28,8 +28,8 @@ class UserProfileHeader extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 20,
-          backgroundColor: Colors.white,
-          backgroundImage: avatarUrl != null && avatarUrl!.isNotEmpty ? NetworkImage(avatarUrl!) : null,
+          backgroundColor: AppColors.whiteColor,
+          backgroundImage: avatarUrl != null && avatarUrl?.isNotEmpty == true ? NetworkImage(avatarUrl ?? "") : null,
           child:
               avatarUrl == null || avatarUrl!.isEmpty
                   ? Text(
@@ -43,11 +43,8 @@ class UserProfileHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              name,
-              style: AppTypography.small.copyWith(fontWeight: FontWeight.w600, fontSize: 12, color: AppColors.whiteColor),
-            ),
-            Text(role, style: AppTypography.small.copyWith(color: AppColors.greyColor, fontSize: 10)),
+            Text(name, style: AppTypography.mediumHint.copyWith(fontWeight: FontWeight.w600, color: AppColors.whiteColor)),
+            Text(role, style: AppTypography.smallHint.copyWith(color: AppColors.greyColor)),
           ],
         ),
         _ProfileDropdownMenu(onLogout: onLogout, onProfile: onProfile, onSettings: onSettings),
@@ -88,8 +85,8 @@ class _ProfileDropdownMenu extends StatelessWidget {
               value: 3,
               onTap: onLogout,
               child: ListTile(
-                leading: const Icon(Icons.logout, color: Colors.redAccent),
-                title: Text("Logout", style: AppTypography.small.copyWith(color: Colors.redAccent)),
+                leading: const Icon(Icons.logout, color: AppColors.errorColor),
+                title: Text("Logout", style: AppTypography.small.copyWith(color: AppColors.errorColor)),
               ),
             ),
           ],

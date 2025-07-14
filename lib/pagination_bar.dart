@@ -55,7 +55,7 @@ class PaginationBar extends StatelessWidget {
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
                 backgroundColor: isActive ? AppColors.primaryColor : null,
-                foregroundColor: isActive ? Colors.white : Colors.black87,
+                foregroundColor: isActive ? AppColors.whiteColor : AppColors.blackColor.withValues(alpha: 0.7),
                 minimumSize: const Size(40, 36),
               ),
               onPressed: () => onPageChanged(page),
