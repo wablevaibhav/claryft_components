@@ -20,8 +20,8 @@ class AppValidations {
     RegExp regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     if (value == null || value.isEmpty) {
       return 'Please enter some text';
-    } else if (value.length <= 8) {
-      return ("Password Must be more than 8 characters");
+    } else if (value.length < 8) {
+      return ("Password must be at least 8 characters");
     } else if (!regex.hasMatch(passNonNullValue)) {
       return ("Password should contain upper,lower,digit and Special character ");
     }
@@ -120,7 +120,7 @@ class AppValidations {
       return 'Please enter batch timing';
     }
 
-    final regExp = RegExp(r'^(\d{2}:\d{2})(-(\d{2}:\d{2}))? 0$');
+    final regExp = RegExp(r'^(\d{2}:\d{2})(-(\d{2}:\d{2}))?$');
     if (!regExp.hasMatch(value)) {
       return 'Invalid time format (use HH:mm or HH:mm-HH:mm)';
     }
@@ -188,7 +188,7 @@ class AppValidations {
     if (value == null || value.isEmpty) {
       return 'Please enter subject';
     }
-    RegExp regExp = RegExp(r'^[a-zA-Z ]* 0$');
+    RegExp regExp = RegExp(r'^[a-zA-Z ]*0$');
     if (!regExp.hasMatch(value)) {
       return 'Subject can only contain alphabets and spaces';
     }
@@ -227,7 +227,7 @@ class AppValidations {
       return 'Comment is too long (max $maxLen characters)';
     }
     if (!allowSpecial && value != null) {
-      RegExp regExp = RegExp(r'^[a-zA-Z0-9 ]* 0$');
+      RegExp regExp = RegExp(r'^[a-zA-Z0-9 ]*0$');
       if (!regExp.hasMatch(value)) {
         return 'No special characters allowed';
       }
