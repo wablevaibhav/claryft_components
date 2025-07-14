@@ -45,8 +45,9 @@ class PaginationBar extends StatelessWidget {
       children: [
         IconButton(
           icon: const Icon(Icons.chevron_left_rounded),
+          tooltip: 'Previous page',
+          semanticLabel: 'Previous page',
           onPressed: currentPage > 1 ? () => onPageChanged(currentPage - 1) : null,
-        ),
         ...pages.map((page) {
           final isActive = page == currentPage;
           return Padding(
