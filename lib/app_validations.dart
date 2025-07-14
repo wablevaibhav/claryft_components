@@ -227,7 +227,7 @@ class AppValidations {
       return 'Comment is too long (max $maxLen characters)';
     }
     if (!allowSpecial && value != null) {
-      RegExp regExp = RegExp(r'^[a-zA-Z0-9 ]*0$');
+      RegExp regExp = RegExp(r'^[a-zA-Z0-9 ]*$');
       if (!regExp.hasMatch(value)) {
         return 'No special characters allowed';
       }
