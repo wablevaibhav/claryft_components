@@ -34,18 +34,6 @@ class Responsive extends StatelessWidget {
     }
   }
 
-  static ResponsiveSize _currentSize = ResponsiveSize.desktop;
-
-  static void update(BuildContext context) {
-    if (isMobile(context)) {
-      _currentSize = ResponsiveSize.mobile;
-    } else if (isTablet(context)) {
-      _currentSize = ResponsiveSize.tablet;
-    } else {
-      _currentSize = ResponsiveSize.desktop;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
