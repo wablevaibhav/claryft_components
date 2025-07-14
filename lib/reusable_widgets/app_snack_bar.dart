@@ -1,9 +1,9 @@
 import 'package:claryft_components/ui_helpers.dart';
 import 'package:flutter/material.dart';
 
-enum SnackBarType { success, error, info }
+enum SnackBarType { success, error, info, warning }
 
-class AppSnackBar {
+class ClaryftSnackBar {
   static void show(
     BuildContext context, {
     required String message,
@@ -16,23 +16,31 @@ class AppSnackBar {
     switch (type) {
       case SnackBarType.success:
         bgColor = Colors.green;
-        icon = Icons.check_circle;
+        icon = Icons.check_circle_outline_sharp;
         break;
       case SnackBarType.error:
         bgColor = Colors.red;
-        icon = Icons.error;
+        icon = Icons.error_outline;
         break;
       case SnackBarType.info:
         bgColor = Colors.blue;
-        icon = Icons.info;
+        icon = Icons.info_outline;
+        break;
+      case SnackBarType.warning:
+        bgColor = Colors.amber;
+        icon = Icons.warning_amber_outlined;
+        break;
     }
 
     final overlay = Overlay.of(context);
+    if (overlay == null) return;
 
-    final overlayEntry = OverlayEntry(
+    late OverlayEntry overlayEntry;
+
+    overlayEntry = OverlayEntry(
       builder:
           (context) => Positioned(
-            top: 50,
+            bottom: 50,
             right: 16,
             child: Material(
               color: Colors.transparent,
@@ -43,7 +51,7 @@ class AppSnackBar {
                   vertical: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: bgColor,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: bgColor, width: 1),
                   boxShadow: [
@@ -57,12 +65,23 @@ class AppSnackBar {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(icon, color: bgColor),
+                    Icon(icon, color: Colors.white),
                     UIHelpers.smallSpace,
                     Flexible(
                       child: Text(
                         message,
-                        style: const TextStyle(color: Colors.blueGrey),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    UIHelpers.smallSpace,
+                    InkWell(
+                      onTap: () {
+                        overlayEntry.remove();
+                      },
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 20,
                       ),
                     ),
                   ],
@@ -74,8 +93,11 @@ class AppSnackBar {
 
     overlay.insert(overlayEntry);
 
+    // Remove after duration if not already removed
     Future.delayed(duration, () {
-      overlayEntry.remove();
+      if (overlayEntry.mounted) {
+        overlayEntry.remove();
+      }
     });
   }
 }

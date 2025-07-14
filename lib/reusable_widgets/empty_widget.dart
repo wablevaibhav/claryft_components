@@ -32,8 +32,8 @@ class EmptyStateWidget extends StatelessWidget {
             ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
           ),
           if (buttonText != null && onButtonPressed != null) ...[
-            const SizedBox(height: 16),
-            AppButton(onPressed: onButtonPressed, text: buttonText ?? ""),
+            UIHelpers.regularSpace,
+            ClaryftButton(onPressed: onButtonPressed, text: buttonText ?? ""),
           ],
         ],
       ),

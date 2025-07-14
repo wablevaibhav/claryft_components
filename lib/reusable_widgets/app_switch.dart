@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AppSwitch extends StatelessWidget {
+class ClaryftSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
   final Color? activeColor;
   final Color? inactiveThumbColor;
   final Color? inactiveTrackColor;
 
-  const AppSwitch({
+  const ClaryftSwitch({
     super.key,
     required this.value,
     required this.onChanged,
