@@ -13,9 +13,9 @@ class Responsive extends StatelessWidget {
 
   const Responsive({super.key, required this.mobile, required this.tablet, required this.desktop});
 
-  static bool isMobileSize() => _currentSize == ResponsiveSize.mobile;
-  static bool isTabletSize() => _currentSize == ResponsiveSize.tablet;
-  static bool isDesktopSize() => _currentSize == ResponsiveSize.desktop;
+  static bool isMobileSize(BuildContext context) => isMobile(context);
+  static bool isTabletSize(BuildContext context) => isTablet(context);
+  static bool isDesktopSize(BuildContext context) => isDesktop(context);
 
   static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < tabletWidth;
 
