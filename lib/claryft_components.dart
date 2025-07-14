@@ -15,3 +15,4 @@ export 'package:pluto_grid/pluto_grid.dart';
 export 'custom_tab_bar.dart';
 export 'status_label.dart';
 export 'dialog_helpers.dart';
+export 'user_profile_header.dart';
