@@ -1,4 +1,5 @@
 import 'package:claryft_components/claryft_components.dart';
+import 'package:claryft_components/reusable_widgets/dropdown_item.dart';
 import 'package:flutter/material.dart';
 
 class AppSingleSelectionDropdown extends StatefulWidget {
@@ -491,22 +492,4 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
       ),
     );
   }
-}
-
-class DropdownItem {
-  final String label;
-  final Widget? image;
-  final bool? isAssetImage;
-  final String? imageUrl;
-  final IconData? icon;
-  final Color? iconColor;
-
-  DropdownItem({
-    required this.label,
-    this.image,
-    this.isAssetImage,
-    this.imageUrl,
-    this.icon,
-    this.iconColor,
-  });
 }
