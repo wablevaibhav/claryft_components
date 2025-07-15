@@ -172,8 +172,8 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
                         widget.headerTitle ?? "",
                         style:
                             widget.headerTitleStyle ??
-                            AppTypography.normal.copyWith(
-                              fontWeight: FontWeight.w600,
+                            AppTypography.small.copyWith(
+                              fontWeight: FontWeight.w500,
                               color: AppColors.blackColor,
                             ),
                         overflow: TextOverflow.ellipsis,
@@ -317,9 +317,9 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
                     child: Material(
                       color:
                           isSelected
-                              ? AppColors.successColor
+                              ? AppColors.primaryColor
                               : _hoveredIndex == index
-                              ? AppColors.successColor.withOpacity(0.3)
+                              ? AppColors.primaryColor.withOpacity(0.3)
                               : AppColors.transparentColor,
                       borderRadius: BorderRadius.circular(8),
                       child: InkWell(
@@ -444,7 +444,7 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
         border: Border.all(
           color:
               _isDropdownOpen
-                  ? AppColors.successColor
+                  ? AppColors.primaryColor
                   : widget.dropDownBorderColor ?? AppColors.greyColor,
           width: _isDropdownOpen ? 2 : 1,
         ),

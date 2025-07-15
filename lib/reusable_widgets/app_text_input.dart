@@ -144,7 +144,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                 widget.labelTextStyle ??
                 AppTypography.small.copyWith(fontWeight: FontWeight.w500),
           ),
-          UIHelpers.smallSpace,
+          UIHelpers.tinySpace,
         ],
         FormField<String>(
           initialValue: widget.controller?.text,
