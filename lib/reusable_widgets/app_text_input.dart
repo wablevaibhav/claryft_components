@@ -1,3 +1,5 @@
+import 'package:claryft_components/app_colors.dart';
+import 'package:claryft_components/app_typography.dart';
 import 'package:claryft_components/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -132,22 +134,6 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
     Widget? prefixIcon = widget.customPrefixIcon ?? widget.prefixIcon;
     Widget? suffixIcon = widget.customSuffixIcon ?? widget.suffixIcon;
 
-    // if (widget.isPasswordField) {
-    //   suffixIcon = AppButton(
-    //     //// key: widget.key?.withSuffix("suffix_icon_button"),
-    //     icon: CjIcon(
-    //       // key: widget.key?.withSuffix("suffix_icon"),
-    //       icon: _obscureText ? CjIcons.eyeSlash : CjIcons.eye,
-    //       color: Colors.black54,
-    //     ),
-    //     onPressed: () {
-    //       setState(() {
-    //         _obscureText = !_obscureText;
-    //       });
-    //     },
-    //   );
-    // }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,7 +142,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
             widget.label ?? "",
             style:
                 widget.labelTextStyle ??
-                TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                AppTypography.small.copyWith(fontWeight: FontWeight.w500),
           ),
           UIHelpers.smallSpace,
         ],
@@ -176,20 +162,20 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
             return Container(
               width: widget.width,
               decoration: BoxDecoration(
-                color: !widget.enabled ? Colors.grey.shade100 : null,
+                color: !widget.enabled ? AppColors.lightGreyColor : null,
 
                 borderRadius: BorderRadius.circular(widget.borderRadius),
                 border: Border.all(
                   width: isFocused ? 2 : 0.3,
                   color:
                       !widget.enabled
-                          ? widget.borderColor ?? Colors.transparent
+                          ? widget.borderColor ?? AppColors.transparentColor
                           : (errorText != null && errorText?.isNotEmpty == true)
-                          ? Colors.redAccent
+                          ? AppColors.errorColor
                           : widget.borderColor ??
                               (isFocused
-                                  ? Colors.lightBlue
-                                  : Colors.grey.shade600),
+                                  ? AppColors.primaryColor
+                                  : AppColors.darkGreyColor),
                 ),
               ),
               child: SizedBox(
@@ -219,7 +205,8 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                         enableSuggestions: widget.enableSuggestions,
                         focusNode: _focusNode,
                         autofocus: widget.autoFocus,
-                        cursorColor: widget.cursorColor ?? Colors.black,
+                        cursorColor:
+                            widget.cursorColor ?? AppColors.primaryColor,
                         ignorePointers: widget.ignorePointers,
                         inputFormatters: widget.inputFormatters,
                         maxLength: widget.maxLength,
@@ -234,9 +221,9 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                           hintText: widget.hint,
                           hintStyle:
                               widget.hintStyle ??
-                              TextStyle(
+                              AppTypography.hint.copyWith(
                                 fontWeight: FontWeight.w400,
-                                color: const Color.fromARGB(255, 180, 180, 180),
+                                color: AppColors.shadowColor,
                               ),
                           border: InputBorder.none,
                           contentPadding:
@@ -253,7 +240,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                                       ? widget.suffixErrorIcon ??
                                           const Icon(
                                             Icons.error_outline_rounded,
-                                            color: Colors.redAccent,
+                                            color: AppColors.errorColor,
                                             size: 20,
                                           )
                                       : suffixIcon),
@@ -291,7 +278,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
             errorText!,
             style:
                 widget.errorTextStyle ??
-                TextStyle(color: Colors.redAccent, fontSize: 12),
+                AppTypography.smallHint.copyWith(color: AppColors.errorColor),
           ),
         ],
       ],

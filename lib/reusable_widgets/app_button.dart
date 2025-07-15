@@ -1,132 +1,15 @@
-// import 'package:claryft_components/ui_helpers.dart';
-// import 'package:flutter/material.dart';
-
-// class ClaryftButton extends StatelessWidget {
-//   final String text;
-//   final String? loadingText;
-//   final void Function()? onPressed;
-//   final bool loading;
-//   final bool outlined;
-//   final bool disabled;
-//   final Color? color;
-//   final Color? textColor;
-//   final Color? disabledColor;
-//   final Color? disabledTextColor;
-//   final Widget? prefixIcon;
-//   final Widget? suffixIcon;
-
-//   const ClaryftButton({
-//     super.key,
-//     required this.text,
-//     this.loadingText,
-//     required this.onPressed,
-//     this.loading = false,
-//     this.outlined = false,
-//     this.disabled = false,
-//     this.color,
-//     this.textColor,
-//     this.disabledColor,
-//     this.disabledTextColor,
-//     this.prefixIcon,
-//     this.suffixIcon,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final effectiveOnTap = (disabled || loading) ? null : onPressed;
-
-//     final bgColor = () {
-//       if (disabled) {
-//         return outlined ? Colors.transparent : disabledColor ?? Colors.grey;
-//       }
-//       return outlined ? Colors.transparent : color ?? Colors.blue.shade800;
-//     }();
-
-//     final borderColor = () {
-//       if (disabled || outlined) {
-//         return disabledColor ?? Colors.grey.shade300;
-//       }
-//       return color ?? Colors.blue.shade800;
-//     }();
-
-//     final effectiveTextColor = () {
-//       if (disabled || outlined) {
-//         return disabledTextColor ?? (outlined ? Colors.black : Colors.white);
-//       }
-//       return textColor ?? (outlined ? borderColor : Colors.white);
-//     }();
-
-//     Widget buildLoadingContent() {
-//       final loadingIndicator = SizedBox(
-//         width: 16,
-//         height: 16,
-//         child: CircularProgressIndicator(
-//           strokeWidth: 2,
-//           valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor),
-//         ),
-//       );
-
-//       if (loadingText != null && loadingText?.isNotEmpty == true) {
-//         return Row(
-//           mainAxisSize: MainAxisSize.min,
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               loadingText ?? "",
-//               style: TextStyle(
-//                 color: effectiveTextColor,
-//                 fontWeight: FontWeight.w600,
-//               ),
-//             ),
-//             UIHelpers.tinySpace,
-//             loadingIndicator,
-//           ],
-//         );
-//       } else {
-//         return loadingIndicator;
-//       }
-//     }
-
-//     Widget buildContent() {
-//       return Row(
-//         mainAxisSize: MainAxisSize.min,
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           if (prefixIcon != null) ...[prefixIcon!, UIHelpers.tinySpace],
-//           Text(
-//             text,
-//             style: TextStyle(
-//               color: effectiveTextColor,
-//               fontWeight: FontWeight.w600,
-//             ),
-//           ),
-//           if (suffixIcon != null) ...[UIHelpers.tinySpace, suffixIcon!],
-//         ],
-//       );
-//     }
-
-//     return InkWell(
-//       onTap: effectiveOnTap,
-//       borderRadius: BorderRadius.circular(8),
-//       child: Container(
-//         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-//         decoration: BoxDecoration(
-//           color: bgColor,
-//           borderRadius: BorderRadius.circular(8),
-//           border: outlined ? Border.all(color: borderColor, width: 0.6) : null,
-//         ),
-//         child: loading ? buildLoadingContent() : buildContent(),
-//       ),
-//     );
-//   }
-// }
+import 'package:claryft_components/app_colors.dart';
+import 'package:claryft_components/app_typography.dart';
 import 'package:claryft_components/ui_helpers.dart';
 import 'package:flutter/material.dart';
 
-class ClaryftButton extends StatefulWidget {
+class AppButton extends StatefulWidget {
   final String text;
   final String? loadingText;
+  final TextStyle? titleStyle;
+  final TextStyle? loadingTextStyle;
   final void Function()? onPressed;
+  final EdgeInsets? padding;
   final bool loading;
   final bool outlined;
   final bool disabled;
@@ -136,8 +19,10 @@ class ClaryftButton extends StatefulWidget {
   final Color? disabledTextColor;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final double? height;
+  final double? width;
 
-  const ClaryftButton({
+  const AppButton({
     super.key,
     required this.text,
     this.loadingText,
@@ -151,13 +36,18 @@ class ClaryftButton extends StatefulWidget {
     this.disabledTextColor,
     this.prefixIcon,
     this.suffixIcon,
+    this.height,
+    this.width,
+    this.loadingTextStyle,
+    this.titleStyle,
+    this.padding,
   });
 
   @override
-  State<ClaryftButton> createState() => _ClaryftButtonState();
+  State<AppButton> createState() => _AppButtonState();
 }
 
-class _ClaryftButtonState extends State<ClaryftButton> {
+class _AppButtonState extends State<AppButton> {
   bool hovering = false;
 
   @override
@@ -165,23 +55,23 @@ class _ClaryftButtonState extends State<ClaryftButton> {
     final effectiveOnTap =
         (widget.disabled || widget.loading) ? null : widget.onPressed;
 
-    final baseColor = widget.color ?? Colors.blue.shade800;
+    final baseColor = widget.color ?? AppColors.primaryColor;
 
     final bgColor = () {
       if (widget.disabled) {
         return widget.outlined
-            ? Colors.transparent
-            : widget.disabledColor ?? Colors.grey;
+            ? AppColors.transparentColor
+            : widget.disabledColor ?? AppColors.greyColor;
       }
       if (hovering) {
         return darken(baseColor, 0.1);
       }
-      return widget.outlined ? Colors.transparent : baseColor;
+      return widget.outlined ? AppColors.transparentColor : baseColor;
     }();
 
     final borderColor = () {
       if (widget.disabled || widget.outlined) {
-        return widget.disabledColor ?? Colors.grey.shade800;
+        return widget.disabledColor ?? AppColors.greyColor;
       }
       return baseColor;
     }();
@@ -189,9 +79,10 @@ class _ClaryftButtonState extends State<ClaryftButton> {
     final effectiveTextColor = () {
       if (widget.disabled || widget.outlined) {
         return widget.disabledTextColor ??
-            (widget.outlined ? Colors.black : Colors.white);
+            (widget.outlined ? AppColors.blackColor : AppColors.whiteColor);
       }
-      return widget.textColor ?? (widget.outlined ? borderColor : Colors.white);
+      return widget.textColor ??
+          (widget.outlined ? borderColor : AppColors.whiteColor);
     }();
 
     Widget buildLoadingContent() {
@@ -212,10 +103,12 @@ class _ClaryftButtonState extends State<ClaryftButton> {
           children: [
             Text(
               widget.loadingText ?? "",
-              style: TextStyle(
-                color: effectiveTextColor,
-                fontWeight: FontWeight.w600,
-              ),
+              style:
+                  widget.loadingTextStyle ??
+                  AppTypography.hint.copyWith(
+                    color: effectiveTextColor,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             UIHelpers.tinySpace,
             loadingIndicator,
@@ -237,10 +130,12 @@ class _ClaryftButtonState extends State<ClaryftButton> {
           ],
           Text(
             widget.text,
-            style: TextStyle(
-              color: effectiveTextColor,
-              fontWeight: FontWeight.w600,
-            ),
+            style:
+                widget.titleStyle ??
+                AppTypography.hint.copyWith(
+                  color: effectiveTextColor,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           if (widget.suffixIcon != null) ...[
             UIHelpers.tinySpace,
@@ -257,7 +152,11 @@ class _ClaryftButtonState extends State<ClaryftButton> {
         onTap: effectiveOnTap,
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          height: widget.height,
+          width: widget.width,
+          padding:
+              widget.padding ??
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.circular(12),

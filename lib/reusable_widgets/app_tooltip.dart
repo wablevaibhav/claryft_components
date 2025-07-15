@@ -1,3 +1,4 @@
+import 'package:claryft_components/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTooltip extends StatelessWidget {
@@ -26,7 +27,7 @@ class AppTooltip extends StatelessWidget {
       message: message,
       textStyle: textStyle,
       decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.black.withOpacity(0.9),
+        color: backgroundColor ?? AppColors.blackColor.withOpacity(0.9),
         borderRadius: BorderRadius.circular(4),
       ),
       padding:

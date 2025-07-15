@@ -1,3 +1,5 @@
+import 'package:claryft_components/app_colors.dart';
+import 'package:claryft_components/app_typography.dart';
 import 'package:claryft_components/ui_helpers.dart';
 import 'package:flutter/material.dart';
 
@@ -15,19 +17,19 @@ class ClaryftSnackBar {
 
     switch (type) {
       case SnackBarType.success:
-        bgColor = Colors.green;
+        bgColor = AppColors.successColor;
         icon = Icons.check_circle_outline_sharp;
         break;
       case SnackBarType.error:
-        bgColor = Colors.red;
+        bgColor = AppColors.errorColor;
         icon = Icons.error_outline;
         break;
       case SnackBarType.info:
-        bgColor = Colors.blue;
+        bgColor = AppColors.infoColor;
         icon = Icons.info_outline;
         break;
       case SnackBarType.warning:
-        bgColor = Colors.amber;
+        bgColor = AppColors.warningColor;
         icon = Icons.warning_amber_outlined;
         break;
     }
@@ -43,7 +45,7 @@ class ClaryftSnackBar {
             bottom: 50,
             right: 16,
             child: Material(
-              color: Colors.transparent,
+              color: AppColors.transparentColor,
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 300),
                 padding: const EdgeInsets.symmetric(
@@ -56,7 +58,7 @@ class ClaryftSnackBar {
                   border: Border.all(color: bgColor, width: 1),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: AppColors.blackColor.withOpacity(0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -65,12 +67,14 @@ class ClaryftSnackBar {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(icon, color: Colors.white),
+                    Icon(icon, color: AppColors.whiteColor),
                     UIHelpers.smallSpace,
                     Flexible(
                       child: Text(
                         message,
-                        style: const TextStyle(color: Colors.white),
+                        style: AppTypography.small.copyWith(
+                          color: AppColors.whiteColor,
+                        ),
                       ),
                     ),
                     UIHelpers.smallSpace,
@@ -80,7 +84,7 @@ class ClaryftSnackBar {
                       },
                       child: const Icon(
                         Icons.close,
-                        color: Colors.white,
+                        color: AppColors.whiteColor,
                         size: 20,
                       ),
                     ),
@@ -93,7 +97,6 @@ class ClaryftSnackBar {
 
     overlay.insert(overlayEntry);
 
-    // Remove after duration if not already removed
     Future.delayed(duration, () {
       if (overlayEntry.mounted) {
         overlayEntry.remove();

@@ -1,16 +1,16 @@
+import 'package:claryft_components/claryft_components.dart';
 import 'package:claryft_components/reusable_widgets/app_button.dart';
-import 'package:claryft_components/ui_helpers.dart';
 import 'package:flutter/material.dart';
 
 class EmptyStateWidget extends StatelessWidget {
-  final Widget icon;
+  final Widget? icon;
   final String message;
   final String? buttonText;
   final VoidCallback? onButtonPressed;
 
   const EmptyStateWidget({
     super.key,
-    required this.icon,
+    this.icon,
     required this.message,
     this.buttonText,
     this.onButtonPressed,
@@ -22,18 +22,16 @@ class EmptyStateWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          icon,
-          UIHelpers.regularSpace,
+          icon ?? Icon(Icons.error_outline_outlined),
+          UIHelpers.smallSpace,
           Text(
             message,
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
+            style: AppTypography.small.copyWith(color: AppColors.blackColor),
           ),
           if (buttonText != null && onButtonPressed != null) ...[
-            UIHelpers.regularSpace,
-            ClaryftButton(onPressed: onButtonPressed, text: buttonText ?? ""),
+            UIHelpers.smallSpace,
+            AppButton(onPressed: onButtonPressed, text: buttonText ?? ""),
           ],
         ],
       ),
