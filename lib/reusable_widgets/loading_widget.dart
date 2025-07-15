@@ -11,7 +11,7 @@ class LoadingWidget extends StatelessWidget {
     required this.height,
     this.radius = 0.0,
     this.baseColor = AppColors.whiteColor,
-    this.highlightColor = const Color(0xFFDCC9FF),
+    this.highlightColor = AppColors.primaryColor,
   });
   @override
   Widget build(BuildContext context) {
