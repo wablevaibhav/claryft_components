@@ -1,15 +1,15 @@
 import 'package:claryft_components/claryft_components.dart';
-import 'package:claryft_components/reusable_widgets/dropdown_item.dart';
+import 'package:claryft_components/dropdown_item.dart';
 import 'package:flutter/material.dart';
 
-class AppSingleSelectionDropdown extends StatefulWidget {
+class AppMultiSelectionDropdown extends StatefulWidget {
   final List<DropdownItem> items;
   final bool isSearchable;
   final bool? isRequired;
   final Color? requiredStarColor;
-  final DropdownItem? selectedItem;
-  final Function(DropdownItem?)? onSelectionChanged;
-  final String? Function(DropdownItem?)? validator;
+  final List<DropdownItem>? selectedItems;
+  final Function(List<DropdownItem>)? onSelectionChanged;
+  final String? Function(List<DropdownItem>)? validator;
   final String? dropdownHintText;
   final TextStyle? dropdownHintTextStyle;
   final TextStyle? searchHintStyle;
@@ -31,11 +31,11 @@ class AppSingleSelectionDropdown extends StatefulWidget {
   final Color? headerTitleIconColor;
   final AutovalidateMode autovalidateMode;
 
-  const AppSingleSelectionDropdown({
+  const AppMultiSelectionDropdown({
     super.key,
     required this.items,
     this.isSearchable = false,
-    this.selectedItem,
+    this.selectedItems,
     this.onSelectionChanged,
     this.suffixIconColor,
     this.prefixIconColor,
@@ -63,12 +63,12 @@ class AppSingleSelectionDropdown extends StatefulWidget {
   });
 
   @override
-  State<AppSingleSelectionDropdown> createState() => _CustomDropdownState();
+  State<AppMultiSelectionDropdown> createState() => _MultiDropdownState();
 }
 
-class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
+class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
   final LayerLink _layerLink = LayerLink();
-  DropdownItem? _selectedItem;
+  List<DropdownItem> _selectedItems = [];
   List<DropdownItem> _filteredItems = [];
   String? errorText;
   final TextEditingController _searchController = TextEditingController();
@@ -79,11 +79,11 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
   @override
   void initState() {
     super.initState();
-    _selectedItem = widget.selectedItem;
+    _selectedItems = widget.selectedItems ?? [];
     _filteredItems = List.from(widget.items);
   }
 
-  void _showDropdown(FormFieldState<DropdownItem?> field) {
+  void _showDropdown(FormFieldState<List<DropdownItem>> field) {
     final renderBox = context.findRenderObject() as RenderBox;
     final dropdownOffset = renderBox.localToGlobal(Offset.zero);
     final widgetSize = renderBox.size;
@@ -135,12 +135,12 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return FormField<DropdownItem?>(
+    return FormField<List<DropdownItem>>(
       key: dropdownFieldKey,
       autovalidateMode: widget.autovalidateMode,
-      initialValue: _selectedItem,
+      initialValue: _selectedItems,
       validator: (value) {
-        final error = widget.validator?.call(value);
+        final error = widget.validator?.call(value ?? []);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             errorText = error;
@@ -148,7 +148,7 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
         });
         return error;
       },
-      builder: (FormFieldState<DropdownItem?> field) {
+      builder: (FormFieldState<List<DropdownItem>> field) {
         return CompositedTransformTarget(
           link: _layerLink,
           child: GestureDetector(
@@ -231,7 +231,7 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
     );
   }
 
-  Widget _dropdownWidget(FormFieldState<DropdownItem?> field) {
+  Widget _dropdownWidget(FormFieldState<List<DropdownItem>> field) {
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),
@@ -254,43 +254,41 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
                 padding: const EdgeInsets.all(4),
                 child: SizedBox(
                   height: 40,
-                  child: Center(
-                    child: TextField(
-                      controller: _searchController,
-                      onChanged: (value) {
-                        setState(() {
-                          _filteredItems =
-                              widget.items
-                                  .where(
-                                    (item) => item.label.toLowerCase().contains(
-                                      value.toLowerCase(),
-                                    ),
-                                  )
-                                  .toList();
-                        });
-                      },
-                      style: AppTypography.normal.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: widget.searchHintText ?? "Search",
-                        hintStyle:
-                            widget.searchHintStyle ??
-                            AppTypography.normal.copyWith(
-                              color: AppColors.greyColor,
-                            ),
-                        prefixIcon: const Icon(Icons.search, size: 18),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        _filteredItems =
+                            widget.items
+                                .where(
+                                  (item) => item.label.toLowerCase().contains(
+                                    value.toLowerCase(),
+                                  ),
+                                )
+                                .toList();
+                      });
+                    },
+                    style: AppTypography.normal.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: widget.searchHintText ?? "Search",
+                      hintStyle:
+                          widget.searchHintStyle ??
+                          AppTypography.normal.copyWith(
                             color: AppColors.greyColor,
                           ),
+                      prefixIcon: const Icon(Icons.search, size: 18),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: AppColors.greyColor,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            color: AppColors.greyColor,
-                          ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: AppColors.greyColor,
                         ),
                       ),
                     ),
@@ -303,69 +301,75 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
                 itemCount: _filteredItems.length,
                 itemBuilder: (context, index) {
                   final item = _filteredItems[index];
-                  final isSelected = _selectedItem == item;
-                  return MouseRegion(
-                    onEnter: (_) {
-                      setState(() {
-                        _hoveredIndex = index;
-                      });
-                    },
-                    onExit: (_) {
-                      setState(() {
-                        _hoveredIndex = null;
-                      });
-                    },
-                    child: Material(
-                      color:
-                          isSelected
-                              ? AppColors.primaryColor
-                              : _hoveredIndex == index
-                              ? AppColors.primaryColor.withOpacity(0.3)
-                              : AppColors.transparentColor,
-                      borderRadius: BorderRadius.circular(8),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _selectedItem = item;
-                            field.didChange(_selectedItem);
-                            if (widget.onSelectionChanged != null) {
-                              widget.onSelectionChanged!(_selectedItem);
-                            }
-                            _removeDropdown();
-                          });
-                        },
+                  final isSelected = _selectedItems.contains(item);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 2,
+                    ), // spacing between items
+                    child: MouseRegion(
+                      onEnter: (_) {
+                        setState(() {
+                          _hoveredIndex = index;
+                        });
+                      },
+                      onExit: (_) {
+                        setState(() {
+                          _hoveredIndex = null;
+                        });
+                      },
+                      child: Material(
+                        color:
+                            isSelected
+                                ? AppColors.primaryColor
+                                : _hoveredIndex == index
+                                ? AppColors.primaryColor.withOpacity(0.3)
+                                : AppColors.transparentColor,
                         borderRadius: BorderRadius.circular(8),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: Row(
-                            children: [
-                              if (_buildLeadingWidget(item) != null) ...[
-                                _buildLeadingWidget(item)!,
-                                UIHelpers.tinySpace,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (isSelected) {
+                                _selectedItems.remove(item);
+                              } else {
+                                _selectedItems.add(item);
+                              }
+                              field.didChange(_selectedItems);
+                              widget.onSelectionChanged?.call(_selectedItems);
+                            });
+                          },
+                          borderRadius: BorderRadius.circular(8),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            child: Row(
+                              children: [
+                                if (_buildLeadingWidget(item) != null) ...[
+                                  _buildLeadingWidget(item)!,
+                                  UIHelpers.tinySpace,
+                                ],
+                                Expanded(
+                                  child: Text(
+                                    item.label,
+                                    style:
+                                        widget.dropdownItemsTextStyle ??
+                                        AppTypography.small.copyWith(
+                                          color:
+                                              isSelected
+                                                  ? AppColors.whiteColor
+                                                  : AppColors.blackColor,
+                                        ),
+                                  ),
+                                ),
+                                if (isSelected)
+                                  const Icon(
+                                    Icons.check,
+                                    color: AppColors.whiteColor,
+                                    size: 16,
+                                  ),
                               ],
-                              Expanded(
-                                child: Text(
-                                  item.label,
-                                  style:
-                                      widget.dropdownItemsTextStyle ??
-                                      AppTypography.small.copyWith(
-                                        color:
-                                            isSelected
-                                                ? AppColors.whiteColor
-                                                : AppColors.blackColor,
-                                      ),
-                                ),
-                              ),
-                              if (isSelected)
-                                const Icon(
-                                  Icons.check,
-                                  color: AppColors.whiteColor,
-                                  size: 16,
-                                ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -394,7 +398,6 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
         ),
       );
     } else if (item.isAssetImage == false &&
-        item.imageUrl != null &&
         item.imageUrl?.isNotEmpty == true) {
       return ClipOval(
         child: Container(
@@ -468,7 +471,9 @@ class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
                   ),
                 Expanded(
                   child: Text(
-                    _selectedItem?.label ?? hintText ?? "Select",
+                    _selectedItems.isNotEmpty
+                        ? _selectedItems.map((e) => e.label).join(', ')
+                        : hintText ?? "Select",
                     overflow: TextOverflow.ellipsis,
                     style:
                         widget.selectedTextStyle ??
