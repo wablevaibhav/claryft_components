@@ -8,9 +8,9 @@ class CustomPopupMenuTheme {
   static PopupMenuThemeData lightPopupMenuTheme = PopupMenuThemeData(
     color: AppColors.whiteColor,
     textStyle: CustomTextTheme.lightTextTheme.displaySmall?.copyWith(color: AppColors.blackColor),
-    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    // elevation: 4.0,
-    //enableFeedback: true,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    elevation: 4.0,
+    enableFeedback: true,
     shadowColor: AppColors.shadowColor.withValues(alpha: 0.2),
     surfaceTintColor: AppColors.whiteColor.withValues(alpha: 0.8),
     position: PopupMenuPosition.under,
