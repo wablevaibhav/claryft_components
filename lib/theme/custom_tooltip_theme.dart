@@ -1,8 +1,8 @@
 import 'package:claryft_components/claryft_components.dart';
 import 'package:flutter/material.dart';
 
-class CustomTootipTheme {
-  CustomTootipTheme._();
+class CustomTooltipTheme {
+  CustomTooltipTheme._();
 
   // Light Tooltip Theme
   static TooltipThemeData lightTooltipTheme = TooltipThemeData(
