@@ -26,4 +26,11 @@ class AppIcons {
   static const IconData education = Iconsax.teacher;
   static const IconData unlock = Iconsax.unlock;
   static const IconData lock = Iconsax.lock;
+  static const IconData user = Iconsax.user;
+  static const IconData home25 = Iconsax.home_25;
+  static const IconData close = Iconsax.close_square;
+  static const IconData horizontalMenu = Iconsax.menu_11;
+  static const IconData arrowRight = Iconsax.arrow_right_3;
+  static const IconData arrowLeft = Iconsax.arrow_left_3;
+  static const IconData chevronRight = Iconsax.arrow_right_3;
 }
