@@ -35,7 +35,6 @@ class ClaryftSnackBar {
     }
 
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
 
     late OverlayEntry overlayEntry;
 
@@ -48,20 +47,13 @@ class ClaryftSnackBar {
               color: AppColors.transparentColor,
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 300),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: bgColor,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: bgColor, width: 1),
                   boxShadow: [
-                    BoxShadow(
-                      color: AppColors.blackColor.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
+                    BoxShadow(color: AppColors.blackColor.withValues(alpha: 0.1), blurRadius: 8, offset: const Offset(0, 4)),
                   ],
                 ),
                 child: Row(
@@ -69,24 +61,13 @@ class ClaryftSnackBar {
                   children: [
                     Icon(icon, color: AppColors.whiteColor),
                     UIHelpers.smallSpace,
-                    Flexible(
-                      child: Text(
-                        message,
-                        style: AppTypography.small.copyWith(
-                          color: AppColors.whiteColor,
-                        ),
-                      ),
-                    ),
+                    Flexible(child: Text(message, style: AppTypography.small.copyWith(color: AppColors.whiteColor))),
                     UIHelpers.smallSpace,
                     InkWell(
                       onTap: () {
                         overlayEntry.remove();
                       },
-                      child: const Icon(
-                        Icons.close,
-                        color: AppColors.whiteColor,
-                        size: 20,
-                      ),
+                      child: const Icon(Icons.close, color: AppColors.whiteColor, size: 20),
                     ),
                   ],
                 ),
