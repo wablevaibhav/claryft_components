@@ -1,18 +1,16 @@
-import 'package:claryft_components/app_colors.dart';
-import 'package:claryft_components/gen_assets/fonts.gen.dart';
+import 'package:claryft_components/claryft_components.dart';
 import 'package:flutter/material.dart';
 
 class AppTypography {
   AppTypography._();
 
-  static const String _fontFamily = FontFamily.inter;
   static final Color _fontColor = AppColors.textPrimaryColor;
   static final Color _fontHintColor = AppColors.textSecondaryColor;
   static const FontWeight _fontWeight = FontWeight.normal;
 
-  static final TextStyle _baseTextStyle = TextStyle(fontFamily: _fontFamily, color: _fontColor, fontWeight: _fontWeight);
+  static final TextStyle _baseTextStyle = GoogleFonts.inter(color: _fontColor, fontWeight: _fontWeight);
 
-  static final TextStyle _hintTextStyle = TextStyle(fontFamily: _fontFamily, color: _fontHintColor, fontWeight: _fontWeight);
+  static final TextStyle _hintTextStyle = GoogleFonts.inter(color: _fontHintColor, fontWeight: _fontWeight);
 
   static final TextStyle headingH1 = _baseTextStyle.copyWith(fontSize: 48.0, letterSpacing: 0.42, height: 32.0 / 28.0);
 
