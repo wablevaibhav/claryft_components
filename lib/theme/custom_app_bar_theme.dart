@@ -11,7 +11,7 @@ class CustomAppBarTheme {
     elevation: 0,
     centerTitle: false,
     scrolledUnderElevation: 0,
-    iconTheme: IconThemeData(color: AppColors.blackColor, size: 24),
+    iconTheme: IconThemeData(color: AppColors.whiteColor, size: 24),
     actionsIconTheme: const IconThemeData(color: AppColors.whiteColor, size: 24),
     titleTextStyle: GoogleFonts.inter(fontSize: 18.0, color: AppColors.whiteColor, fontWeight: FontWeight.w600),
   );
