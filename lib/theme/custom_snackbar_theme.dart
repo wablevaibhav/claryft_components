@@ -16,7 +16,7 @@ class CustomSnackbarTheme {
   // Dark Snackbar Theme
   static final darkSnackbarTheme = SnackBarThemeData(
     backgroundColor: AppColors.blackColor.withValues(alpha: 0.8),
-    contentTextStyle: CustomTextTheme.darkTextTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+    contentTextStyle: CustomTextTheme.darkTextTheme.bodyMedium?.copyWith(color: AppColors.whiteColor),
     actionTextColor: AppColors.primaryColor,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     behavior: SnackBarBehavior.floating,
