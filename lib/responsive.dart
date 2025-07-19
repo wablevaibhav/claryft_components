@@ -36,11 +36,12 @@ class Responsive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth >= desktopWidth) {
           return desktop;
-        } else if (constraints.maxWidth >= tabletWidth) {
+        } else if (constraints.maxWidth >= tabletWidth || screenWidth >= tabletWidth) {
           return tablet;
         } else {
           return mobile;
