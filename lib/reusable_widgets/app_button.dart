@@ -1,18 +1,17 @@
-import 'package:claryft_components/app_colors.dart';
-import 'package:claryft_components/app_typography.dart';
-import 'package:claryft_components/ui_helpers.dart';
+import 'package:claryft_components/claryft_components.dart';
 import 'package:flutter/material.dart';
+
+enum AppButtonState { normal, loading, disabled }
+
+enum AppButtonType { filled, outlined }
 
 class AppButton extends StatefulWidget {
   final String text;
   final String? loadingText;
-  final TextStyle? titleStyle;
+  final TextStyle? textStyle;
   final TextStyle? loadingTextStyle;
   final void Function()? onPressed;
   final EdgeInsets? padding;
-  final bool loading;
-  final bool outlined;
-  final bool disabled;
   final Color? color;
   final Color? textColor;
   final Color? disabledColor;
@@ -21,15 +20,19 @@ class AppButton extends StatefulWidget {
   final Widget? suffixIcon;
   final double? height;
   final double? width;
+  final double borderRadius;
+  final Color? borderColor;
+  final AppButtonState state;
+  final AppButtonType type;
 
   const AppButton({
     super.key,
     required this.text,
-    this.loadingText,
     required this.onPressed,
-    this.loading = false,
-    this.outlined = false,
-    this.disabled = false,
+    this.loadingText,
+    this.textStyle,
+    this.loadingTextStyle,
+    this.padding,
     this.color,
     this.textColor,
     this.disabledColor,
@@ -38,9 +41,10 @@ class AppButton extends StatefulWidget {
     this.suffixIcon,
     this.height,
     this.width,
-    this.loadingTextStyle,
-    this.titleStyle,
-    this.padding,
+    this.borderRadius = 10,
+    this.borderColor,
+    this.state = AppButtonState.normal,
+    this.type = AppButtonType.filled,
   });
 
   @override
@@ -52,95 +56,90 @@ class _AppButtonState extends State<AppButton> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveOnTap =
-        (widget.disabled || widget.loading) ? null : widget.onPressed;
+    final isDisabled = widget.state == AppButtonState.disabled;
+    final isLoading = widget.state == AppButtonState.loading;
+
+    final effectiveOnTap = (isDisabled || isLoading) ? null : widget.onPressed;
 
     final baseColor = widget.color ?? AppColors.primaryColor;
+    final effectiveBorderColor = widget.borderColor ?? baseColor;
 
     final bgColor = () {
-      if (widget.disabled) {
-        return widget.outlined
-            ? AppColors.transparentColor
-            : widget.disabledColor ?? AppColors.greyColor;
-      }
-      if (hovering) {
-        return darken(baseColor, 0.1);
-      }
-      return widget.outlined ? AppColors.transparentColor : baseColor;
+      if (widget.type == AppButtonType.outlined) return Colors.transparent;
+      if (isDisabled) return widget.disabledColor ?? AppColors.disabledColor;
+      return hovering ? darken(baseColor) : baseColor;
     }();
 
-    final borderColor = () {
-      if (widget.disabled || widget.outlined) {
-        return widget.disabledColor ?? AppColors.greyColor;
+    final border =
+        widget.type == AppButtonType.outlined || isDisabled
+            ? Border.all(
+              color:
+                  isDisabled
+                      ? widget.disabledColor ?? AppColors.disabledColor
+                      : effectiveBorderColor,
+              width: 0.8,
+            )
+            : null;
+
+    final textColor = () {
+      if (isDisabled) return widget.disabledTextColor ?? AppColors.whiteColor;
+      if (widget.type == AppButtonType.outlined) {
+        return widget.textColor ?? effectiveBorderColor;
       }
-      return baseColor;
+      return widget.textColor ?? Colors.white;
     }();
 
-    final effectiveTextColor = () {
-      if (widget.disabled || widget.outlined) {
-        return widget.disabledTextColor ??
-            (widget.outlined ? AppColors.blackColor : AppColors.whiteColor);
-      }
-      return widget.textColor ??
-          (widget.outlined ? borderColor : AppColors.whiteColor);
-    }();
-
-    Widget buildLoadingContent() {
-      final loadingIndicator = SizedBox(
-        width: 16,
-        height: 16,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor),
-        ),
-      );
-
-      if (widget.loadingText != null &&
-          widget.loadingText?.isNotEmpty == true) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.loadingText ?? "",
-              style:
-                  widget.loadingTextStyle ??
-                  AppTypography.hint.copyWith(
-                    color: effectiveTextColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            UIHelpers.tinySpace,
-            loadingIndicator,
-          ],
-        );
-      } else {
-        return loadingIndicator;
-      }
-    }
+    final borderRadius = BorderRadius.circular(widget.borderRadius);
 
     Widget buildContent() {
+      final content = <Widget>[
+        if (widget.prefixIcon != null) ...[
+          widget.prefixIcon!,
+          UIHelpers.tinySpace,
+        ],
+        Text(
+          widget.text,
+          style:
+              widget.textStyle ??
+              AppTypography.hint.copyWith(
+                color: textColor,
+                fontWeight: FontWeight.w400,
+              ),
+        ),
+        if (widget.suffixIcon != null) ...[
+          UIHelpers.tinySpace,
+          widget.suffixIcon!,
+        ],
+      ];
+
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: content,
+      );
+    }
+
+    Widget buildLoading() {
       return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (widget.prefixIcon != null) ...[
-            widget.prefixIcon!,
-            UIHelpers.tinySpace,
-          ],
-          Text(
-            widget.text,
-            style:
-                widget.titleStyle ??
-                AppTypography.hint.copyWith(
-                  color: effectiveTextColor,
-                  fontWeight: FontWeight.w600,
-                ),
+          if (widget.loadingText?.isNotEmpty ?? false)
+            Text(
+              widget.loadingText!,
+              style:
+                  widget.loadingTextStyle ??
+                  AppTypography.hint.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+          if (widget.loadingText?.isNotEmpty ?? false) UIHelpers.tinySpace,
+          const SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 2),
           ),
-          if (widget.suffixIcon != null) ...[
-            UIHelpers.tinySpace,
-            widget.suffixIcon!,
-          ],
         ],
       );
     }
@@ -149,23 +148,20 @@ class _AppButtonState extends State<AppButton> {
       onEnter: (_) => setState(() => hovering = true),
       onExit: (_) => setState(() => hovering = false),
       child: InkWell(
+        borderRadius: borderRadius,
         onTap: effectiveOnTap,
-        borderRadius: BorderRadius.circular(8),
         child: Container(
           height: widget.height,
           width: widget.width,
           padding:
               widget.padding ??
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
           decoration: BoxDecoration(
             color: bgColor,
-            borderRadius: BorderRadius.circular(12),
-            border:
-                widget.outlined
-                    ? Border.all(color: borderColor, width: 0.3)
-                    : null,
+            border: border,
+            borderRadius: borderRadius,
           ),
-          child: widget.loading ? buildLoadingContent() : buildContent(),
+          child: isLoading ? buildLoading() : buildContent(),
         ),
       ),
     );
