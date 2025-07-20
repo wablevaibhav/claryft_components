@@ -1,15 +1,15 @@
 import 'package:claryft_components/claryft_components.dart';
-import 'package:claryft_components/reusable_widgets/dropdown_item.dart';
+import 'package:claryft_components/dropdown_item.dart';
 import 'package:flutter/material.dart';
 
-class AppMultiSelectionDropdown extends StatefulWidget {
+class AppSingleSelectionDropdown extends StatefulWidget {
   final List<DropdownItem> items;
   final bool isSearchable;
   final bool? isRequired;
   final Color? requiredStarColor;
-  final List<DropdownItem>? selectedItems;
-  final Function(List<DropdownItem>)? onSelectionChanged;
-  final String? Function(List<DropdownItem>)? validator;
+  final DropdownItem? selectedItem;
+  final Function(DropdownItem?)? onSelectionChanged;
+  final String? Function(DropdownItem?)? validator;
   final String? dropdownHintText;
   final TextStyle? dropdownHintTextStyle;
   final TextStyle? searchHintStyle;
@@ -31,11 +31,11 @@ class AppMultiSelectionDropdown extends StatefulWidget {
   final Color? headerTitleIconColor;
   final AutovalidateMode autovalidateMode;
 
-  const AppMultiSelectionDropdown({
+  const AppSingleSelectionDropdown({
     super.key,
     required this.items,
     this.isSearchable = false,
-    this.selectedItems,
+    this.selectedItem,
     this.onSelectionChanged,
     this.suffixIconColor,
     this.prefixIconColor,
@@ -63,12 +63,12 @@ class AppMultiSelectionDropdown extends StatefulWidget {
   });
 
   @override
-  State<AppMultiSelectionDropdown> createState() => _MultiDropdownState();
+  State<AppSingleSelectionDropdown> createState() => _CustomDropdownState();
 }
 
-class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
+class _CustomDropdownState extends State<AppSingleSelectionDropdown> {
   final LayerLink _layerLink = LayerLink();
-  List<DropdownItem> _selectedItems = [];
+  DropdownItem? _selectedItem;
   List<DropdownItem> _filteredItems = [];
   String? errorText;
   final TextEditingController _searchController = TextEditingController();
@@ -79,11 +79,11 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
   @override
   void initState() {
     super.initState();
-    _selectedItems = widget.selectedItems ?? [];
+    _selectedItem = widget.selectedItem;
     _filteredItems = List.from(widget.items);
   }
 
-  void _showDropdown(FormFieldState<List<DropdownItem>> field) {
+  void _showDropdown(FormFieldState<DropdownItem?> field) {
     final renderBox = context.findRenderObject() as RenderBox;
     final dropdownOffset = renderBox.localToGlobal(Offset.zero);
     final widgetSize = renderBox.size;
@@ -135,12 +135,12 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return FormField<List<DropdownItem>>(
+    return FormField<DropdownItem?>(
       key: dropdownFieldKey,
       autovalidateMode: widget.autovalidateMode,
-      initialValue: _selectedItems,
+      initialValue: _selectedItem,
       validator: (value) {
-        final error = widget.validator?.call(value ?? []);
+        final error = widget.validator?.call(value);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
             errorText = error;
@@ -148,7 +148,7 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
         });
         return error;
       },
-      builder: (FormFieldState<List<DropdownItem>> field) {
+      builder: (FormFieldState<DropdownItem?> field) {
         return CompositedTransformTarget(
           link: _layerLink,
           child: GestureDetector(
@@ -231,7 +231,7 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
     );
   }
 
-  Widget _dropdownWidget(FormFieldState<List<DropdownItem>> field) {
+  Widget _dropdownWidget(FormFieldState<DropdownItem?> field) {
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(8),
@@ -254,41 +254,43 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
                 padding: const EdgeInsets.all(4),
                 child: SizedBox(
                   height: 40,
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        _filteredItems =
-                            widget.items
-                                .where(
-                                  (item) => item.label.toLowerCase().contains(
-                                    value.toLowerCase(),
-                                  ),
-                                )
-                                .toList();
-                      });
-                    },
-                    style: AppTypography.normal.copyWith(
-                      color: AppColors.blackColor,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: widget.searchHintText ?? "Search",
-                      hintStyle:
-                          widget.searchHintStyle ??
-                          AppTypography.normal.copyWith(
+                  child: Center(
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          _filteredItems =
+                              widget.items
+                                  .where(
+                                    (item) => item.label.toLowerCase().contains(
+                                      value.toLowerCase(),
+                                    ),
+                                  )
+                                  .toList();
+                        });
+                      },
+                      style: AppTypography.normal.copyWith(
+                        color: AppColors.blackColor,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: widget.searchHintText ?? "Search",
+                        hintStyle:
+                            widget.searchHintStyle ??
+                            AppTypography.normal.copyWith(
+                              color: AppColors.greyColor,
+                            ),
+                        prefixIcon: const Icon(Icons.search, size: 18),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
                             color: AppColors.greyColor,
                           ),
-                      prefixIcon: const Icon(Icons.search, size: 18),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(
-                          color: AppColors.greyColor,
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: const BorderSide(
-                          color: AppColors.greyColor,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: AppColors.greyColor,
+                          ),
                         ),
                       ),
                     ),
@@ -301,75 +303,69 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
                 itemCount: _filteredItems.length,
                 itemBuilder: (context, index) {
                   final item = _filteredItems[index];
-                  final isSelected = _selectedItems.contains(item);
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 2,
-                    ), // spacing between items
-                    child: MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          _hoveredIndex = index;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          _hoveredIndex = null;
-                        });
-                      },
-                      child: Material(
-                        color:
-                            isSelected
-                                ? AppColors.primaryColor
-                                : _hoveredIndex == index
-                                ? AppColors.primaryColor.withOpacity(0.3)
-                                : AppColors.transparentColor,
+                  final isSelected = _selectedItem == item;
+                  return MouseRegion(
+                    onEnter: (_) {
+                      setState(() {
+                        _hoveredIndex = index;
+                      });
+                    },
+                    onExit: (_) {
+                      setState(() {
+                        _hoveredIndex = null;
+                      });
+                    },
+                    child: Material(
+                      color:
+                          isSelected
+                              ? AppColors.primaryColor
+                              : _hoveredIndex == index
+                              ? AppColors.primaryColor.withOpacity(0.3)
+                              : AppColors.transparentColor,
+                      borderRadius: BorderRadius.circular(8),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedItem = item;
+                            field.didChange(_selectedItem);
+                            if (widget.onSelectionChanged != null) {
+                              widget.onSelectionChanged!(_selectedItem);
+                            }
+                            _removeDropdown();
+                          });
+                        },
                         borderRadius: BorderRadius.circular(8),
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (isSelected) {
-                                _selectedItems.remove(item);
-                              } else {
-                                _selectedItems.add(item);
-                              }
-                              field.didChange(_selectedItems);
-                              widget.onSelectionChanged?.call(_selectedItems);
-                            });
-                          },
-                          borderRadius: BorderRadius.circular(8),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Row(
-                              children: [
-                                if (_buildLeadingWidget(item) != null) ...[
-                                  _buildLeadingWidget(item)!,
-                                  UIHelpers.tinySpace,
-                                ],
-                                Expanded(
-                                  child: Text(
-                                    item.label,
-                                    style:
-                                        widget.dropdownItemsTextStyle ??
-                                        AppTypography.small.copyWith(
-                                          color:
-                                              isSelected
-                                                  ? AppColors.whiteColor
-                                                  : AppColors.blackColor,
-                                        ),
-                                  ),
-                                ),
-                                if (isSelected)
-                                  const Icon(
-                                    Icons.check,
-                                    color: AppColors.whiteColor,
-                                    size: 16,
-                                  ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Row(
+                            children: [
+                              if (_buildLeadingWidget(item) != null) ...[
+                                _buildLeadingWidget(item)!,
+                                UIHelpers.tinySpace,
                               ],
-                            ),
+                              Expanded(
+                                child: Text(
+                                  item.label,
+                                  style:
+                                      widget.dropdownItemsTextStyle ??
+                                      AppTypography.small.copyWith(
+                                        color:
+                                            isSelected
+                                                ? AppColors.whiteColor
+                                                : AppColors.blackColor,
+                                      ),
+                                ),
+                              ),
+                              if (isSelected)
+                                const Icon(
+                                  Icons.check,
+                                  color: AppColors.whiteColor,
+                                  size: 16,
+                                ),
+                            ],
                           ),
                         ),
                       ),
@@ -398,6 +394,7 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
         ),
       );
     } else if (item.isAssetImage == false &&
+        item.imageUrl != null &&
         item.imageUrl?.isNotEmpty == true) {
       return ClipOval(
         child: Container(
@@ -471,9 +468,7 @@ class _MultiDropdownState extends State<AppMultiSelectionDropdown> {
                   ),
                 Expanded(
                   child: Text(
-                    _selectedItems.isNotEmpty
-                        ? _selectedItems.map((e) => e.label).join(', ')
-                        : hintText ?? "Select",
+                    _selectedItem?.label ?? hintText ?? "Select",
                     overflow: TextOverflow.ellipsis,
                     style:
                         widget.selectedTextStyle ??
