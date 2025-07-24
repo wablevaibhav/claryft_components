@@ -72,13 +72,7 @@ class _AppButtonState extends State<AppButton> {
 
     final border =
         widget.type == AppButtonType.outlined || isDisabled
-            ? Border.all(
-              color:
-                  isDisabled
-                      ? widget.disabledColor ?? AppColors.disabledColor
-                      : effectiveBorderColor,
-              width: 0.8,
-            )
+            ? Border.all(color: isDisabled ? widget.disabledColor ?? AppColors.disabledColor : effectiveBorderColor, width: 0.8)
             : null;
 
     final textColor = () {
@@ -93,30 +87,12 @@ class _AppButtonState extends State<AppButton> {
 
     Widget buildContent() {
       final content = <Widget>[
-        if (widget.prefixIcon != null) ...[
-          widget.prefixIcon!,
-          UIHelpers.tinySpace,
-        ],
-        Text(
-          widget.text,
-          style:
-              widget.textStyle ??
-              AppTypography.hint.copyWith(
-                color: textColor,
-                fontWeight: FontWeight.w400,
-              ),
-        ),
-        if (widget.suffixIcon != null) ...[
-          UIHelpers.tinySpace,
-          widget.suffixIcon!,
-        ],
+        if (widget.prefixIcon != null) ...[widget.prefixIcon!, UIHelpers.tinySpace],
+        Text(widget.text, style: widget.textStyle ?? AppTypography.hint.copyWith(color: textColor, fontWeight: FontWeight.w400)),
+        if (widget.suffixIcon != null) ...[UIHelpers.tinySpace, widget.suffixIcon!],
       ];
 
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: content,
-      );
+      return Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: content);
     }
 
     Widget buildLoading() {
@@ -127,19 +103,10 @@ class _AppButtonState extends State<AppButton> {
           if (widget.loadingText?.isNotEmpty ?? false)
             Text(
               widget.loadingText!,
-              style:
-                  widget.loadingTextStyle ??
-                  AppTypography.hint.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+              style: widget.loadingTextStyle ?? AppTypography.hint.copyWith(color: textColor, fontWeight: FontWeight.w500),
             ),
           if (widget.loadingText?.isNotEmpty ?? false) UIHelpers.tinySpace,
-          const SizedBox(
-            width: 16,
-            height: 16,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
+          const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
         ],
       );
     }
@@ -153,14 +120,8 @@ class _AppButtonState extends State<AppButton> {
         child: Container(
           height: widget.height,
           width: widget.width,
-          padding:
-              widget.padding ??
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-          decoration: BoxDecoration(
-            color: bgColor,
-            border: border,
-            borderRadius: borderRadius,
-          ),
+          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(color: bgColor, border: border, borderRadius: borderRadius),
           child: isLoading ? buildLoading() : buildContent(),
         ),
       ),
