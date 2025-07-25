@@ -138,12 +138,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) ...[
-          Text(
-            widget.label ?? "",
-            style:
-                widget.labelTextStyle ??
-                AppTypography.small.copyWith(fontWeight: FontWeight.w500),
-          ),
+          Text(widget.label ?? "", style: widget.labelTextStyle ?? AppTypography.small.copyWith(fontWeight: FontWeight.w500)),
           UIHelpers.tinySpace,
         ],
         FormField<String>(
@@ -163,50 +158,25 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
               width: widget.width,
               decoration: BoxDecoration(
                 color: !widget.enabled ? AppColors.lightGreyColor : null,
-
                 borderRadius: BorderRadius.circular(widget.borderRadius),
-                border: Border.all(
-                  width: isFocused ? 2 : 0.3,
-                  color:
-                      !widget.enabled
-                          ? widget.borderColor ?? AppColors.transparentColor
-                          : (errorText != null && errorText?.isNotEmpty == true)
-                          ? AppColors.errorColor
-                          : widget.borderColor ??
-                              (isFocused
-                                  ? AppColors.primaryColor
-                                  : AppColors.darkGreyColor),
-                ),
               ),
               child: SizedBox(
                 height: widget.height,
                 child: Row(
                   children: [
-                    if (prefixIcon != null) ...[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: prefixIcon,
-                      ),
-                    ],
+                    if (prefixIcon != null) ...[Padding(padding: const EdgeInsets.only(left: 10), child: prefixIcon)],
                     Expanded(
                       child: TextFormField(
                         controller: widget.controller,
-                        initialValue:
-                            widget.controller == null
-                                ? widget.initialValue
-                                : null,
+                        initialValue: widget.controller == null ? widget.initialValue : null,
                         keyboardType: widget.keyboardType,
-                        obscureText:
-                            widget.isPasswordField
-                                ? _obscureText
-                                : widget.obscureText,
+                        obscureText: widget.isPasswordField ? _obscureText : widget.obscureText,
                         enabled: widget.enabled,
                         autocorrect: widget.autocorrect,
                         enableSuggestions: widget.enableSuggestions,
                         focusNode: _focusNode,
                         autofocus: widget.autoFocus,
-                        cursorColor:
-                            widget.cursorColor ?? AppColors.primaryColor,
+                        cursorColor: widget.cursorColor ?? AppColors.primaryColor,
                         ignorePointers: widget.ignorePointers,
                         inputFormatters: widget.inputFormatters,
                         maxLength: widget.maxLength,
@@ -216,33 +186,43 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                         showCursor: widget.showCursor,
                         textInputAction: widget.textInputAction,
                         onFieldSubmitted: widget.onSubmittedAction,
-
                         decoration: InputDecoration(
                           hintText: widget.hint,
                           hintStyle:
                               widget.hintStyle ??
-                              AppTypography.hint.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.shadowColor,
-                              ),
-                          border: InputBorder.none,
-                          contentPadding:
-                              widget.contentPadding ??
-                              const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 14,
-                              ),
+                              AppTypography.hint.copyWith(fontWeight: FontWeight.w400, color: AppColors.shadowColor),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.darkGreyColor, width: 0.3),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.primaryColor, width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.darkGreyColor, width: 0.3),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            borderSide: const BorderSide(color: AppColors.errorColor, width: 2),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            borderSide: const BorderSide(color: AppColors.errorColor, width: 2),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
+                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.lightGreyColor, width: 0.3),
+                          ),
+                          contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                           isDense: widget.isDense ?? true,
                           suffixIcon:
                               widget.isPasswordField
                                   ? suffixIcon
                                   : (errorText != null && errorText!.isNotEmpty
                                       ? widget.suffixErrorIcon ??
-                                          const Icon(
-                                            Icons.error_outline_rounded,
-                                            color: AppColors.errorColor,
-                                            size: 20,
-                                          )
+                                          const Icon(Icons.error_outline_rounded, color: AppColors.errorColor, size: 20)
                                       : suffixIcon),
                         ),
                         onChanged: (value) {
@@ -274,12 +254,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
         ),
         if (errorText != null && errorText!.isNotEmpty) ...[
           UIHelpers.tinySpace,
-          Text(
-            errorText!,
-            style:
-                widget.errorTextStyle ??
-                AppTypography.smallHint.copyWith(color: AppColors.errorColor),
-          ),
+          Text(errorText!, style: widget.errorTextStyle ?? AppTypography.smallHint.copyWith(color: AppColors.errorColor)),
         ],
       ],
     );
