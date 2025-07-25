@@ -160,102 +160,92 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                 color: !widget.enabled ? AppColors.lightGreyColor : null,
                 borderRadius: BorderRadius.circular(widget.borderRadius),
               ),
-              child: SizedBox(
-                height: widget.height,
-                child: Row(
-                  children: [
-                    if (prefixIcon != null) ...[Padding(padding: const EdgeInsets.only(left: 10), child: prefixIcon)],
-                    Expanded(
-                      child: TextFormField(
-                        controller: widget.controller,
-                        initialValue: widget.controller == null ? widget.initialValue : null,
-                        keyboardType: widget.keyboardType,
-                        obscureText: widget.isPasswordField ? _obscureText : widget.obscureText,
-                        enabled: widget.enabled,
-                        autocorrect: widget.autocorrect,
-                        enableSuggestions: widget.enableSuggestions,
-                        focusNode: _focusNode,
-                        autofocus: widget.autoFocus,
-                        cursorColor: widget.cursorColor ?? AppColors.primaryColor,
-                        ignorePointers: widget.ignorePointers,
-                        inputFormatters: widget.inputFormatters,
-                        maxLength: widget.maxLength,
-                        maxLines: widget.maxLines ?? 1,
-                        minLines: widget.minLines,
-                        readOnly: widget.readOnly,
-                        showCursor: widget.showCursor,
-                        textInputAction: widget.textInputAction,
-                        onFieldSubmitted: widget.onSubmittedAction,
-                        decoration: InputDecoration(
-                          hintText: widget.hint,
-                          hintStyle:
-                              widget.hintStyle ??
-                              AppTypography.hint.copyWith(fontWeight: FontWeight.w400, color: AppColors.shadowColor),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(widget.borderRadius),
-                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.darkGreyColor, width: 0.3),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (prefixIcon != null) Padding(padding: const EdgeInsets.only(left: 10, top: 16), child: prefixIcon),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          key: widget.textFieldKey,
+                          controller: widget.controller,
+                          initialValue: widget.controller == null ? widget.initialValue : null,
+                          keyboardType: widget.keyboardType,
+                          obscureText: widget.isPasswordField ? _obscureText : widget.obscureText,
+                          enabled: widget.enabled,
+                          autocorrect: widget.autocorrect,
+                          enableSuggestions: widget.enableSuggestions,
+                          focusNode: _focusNode,
+                          autofocus: widget.autoFocus,
+                          cursorColor: widget.cursorColor ?? AppColors.primaryColor,
+                          inputFormatters: widget.inputFormatters,
+                          maxLength: widget.maxLength,
+                          maxLines: widget.maxLines ?? 1,
+                          minLines: widget.minLines,
+                          readOnly: widget.readOnly,
+                          showCursor: widget.showCursor,
+                          textInputAction: widget.textInputAction,
+                          onFieldSubmitted: widget.onSubmittedAction,
+                          onChanged: (value) {
+                            field.didChange(value);
+                            widget.onChanged?.call(value);
+                            final error = widget.validator?.call(value);
+                            setState(() {
+                              errorText = error;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            hintText: widget.hint,
+                            errorText: errorText,
+                            errorStyle: widget.errorTextStyle ?? AppTypography.mediumHint.copyWith(color: AppColors.errorColor),
+                            hintStyle:
+                                widget.hintStyle ??
+                                AppTypography.hint.copyWith(fontWeight: FontWeight.w400, color: AppColors.shadowColor),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              borderSide: BorderSide(color: widget.borderColor ?? AppColors.darkGreyColor, width: 0.3),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              borderSide: BorderSide(color: widget.borderColor ?? AppColors.primaryColor),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              borderSide: BorderSide(color: widget.borderColor ?? AppColors.darkGreyColor, width: 0.3),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              borderSide: const BorderSide(color: AppColors.errorColor),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              borderSide: const BorderSide(color: AppColors.errorColor),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(widget.borderRadius),
+                              borderSide: BorderSide(color: widget.borderColor ?? AppColors.lightGreyColor, width: 0.3),
+                            ),
+                            contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                            isDense: true,
+                            suffixIcon:
+                                widget.isPasswordField
+                                    ? suffixIcon
+                                    : (errorText != null && errorText!.isNotEmpty
+                                        ? widget.suffixErrorIcon ??
+                                            const Icon(Icons.error_outline_rounded, color: AppColors.errorColor, size: 20)
+                                        : suffixIcon),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(widget.borderRadius),
-                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.primaryColor, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(widget.borderRadius),
-                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.darkGreyColor, width: 0.3),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(widget.borderRadius),
-                            borderSide: const BorderSide(color: AppColors.errorColor, width: 2),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(widget.borderRadius),
-                            borderSide: const BorderSide(color: AppColors.errorColor, width: 2),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(widget.borderRadius),
-                            borderSide: BorderSide(color: widget.borderColor ?? AppColors.lightGreyColor, width: 0.3),
-                          ),
-                          contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                          isDense: widget.isDense ?? true,
-                          suffixIcon:
-                              widget.isPasswordField
-                                  ? suffixIcon
-                                  : (errorText != null && errorText!.isNotEmpty
-                                      ? widget.suffixErrorIcon ??
-                                          const Icon(Icons.error_outline_rounded, color: AppColors.errorColor, size: 20)
-                                      : suffixIcon),
                         ),
-                        onChanged: (value) {
-                          field.didChange(value);
-                          widget.onChanged?.call(value);
-                          final error = widget.validator?.call(value);
-                          setState(() {
-                            errorText = error;
-                          });
-                        },
-                        onTap: () {
-                          if (!widget.enabled) return;
-                          setState(() {
-                            isFocused = true;
-                          });
-                        },
-                        onEditingComplete: () {
-                          setState(() {
-                            isFocused = false;
-                          });
-                        },
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },
         ),
-        if (errorText != null && errorText!.isNotEmpty) ...[
-          UIHelpers.tinySpace,
-          Text(errorText!, style: widget.errorTextStyle ?? AppTypography.smallHint.copyWith(color: AppColors.errorColor)),
-        ],
       ],
     );
   }
