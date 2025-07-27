@@ -58,9 +58,9 @@ class AppValidations {
     return null;
   }
 
-  static String? requireField(String? value) {
+  static String? requiredField(String? value) {
     if (value == null || value.isEmpty) {
-      return '';
+      return 'This field is required';
     }
 
     return null;
@@ -231,6 +231,43 @@ class AppValidations {
       if (!regExp.hasMatch(value)) {
         return 'No special characters allowed';
       }
+    }
+    return null;
+  }
+
+  static String? yearValidation(String? value, {int minYear = 1900, int? maxYear}) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a year';
+    }
+
+    final year = int.tryParse(value);
+    final currentYear = DateTime.now().year;
+    final upperLimit = maxYear ?? currentYear;
+
+    if (year == null) {
+      return 'Year must be a valid number';
+    }
+    if (year < minYear) {
+      return 'Year cannot be before $minYear';
+    }
+    if (year > upperLimit) {
+      return 'Year cannot be after $upperLimit';
+    }
+
+    return null;
+  }
+
+  static String? totalCountValidation(String? value, {String label = 'Count'}) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter $label';
+    }
+
+    final int? count = int.tryParse(value);
+    if (count == null) {
+      return '$label must be a number';
+    }
+    if (count < 0) {
+      return '$label cannot be negative';
     }
     return null;
   }
