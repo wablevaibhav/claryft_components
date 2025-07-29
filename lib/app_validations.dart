@@ -1,17 +1,56 @@
 class AppValidations {
   static String? validateEmail(String? value) {
-    var passNonNullValue = value ?? "";
-    RegExp reg = RegExp(
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
-    );
+    final email = value?.trim() ?? '';
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
-    if (passNonNullValue.isEmpty) {
-      return 'Please enter some text';
-    } else if (!passNonNullValue.contains("@")) {
-      return ("Email should contains @");
-    } else if (!reg.hasMatch(passNonNullValue)) {
-      return ("Email is not valid");
+    const allowedDomains = [
+      'gmail.com',
+      'outlook.com',
+      'hotmail.com',
+      'yahoo.com',
+      'icloud.com',
+      'live.com',
+      'msn.com',
+      'mail.com',
+      'protonmail.com',
+    ];
+    if (email.isEmpty) {
+      return 'Please enter your email address';
     }
+    if (!email.contains('@')) {
+      return 'Email must contain @ symbol';
+    }
+    if (!emailRegex.hasMatch(email)) {
+      return 'Please enter a valid email format';
+    }
+    final parts = email.split('@');
+    if (parts.length != 2) {
+      return 'Invalid email structure';
+    }
+
+    final domain = parts[1].toLowerCase();
+    final isValidDomain = allowedDomains.any((d) => domain == d);
+    if (!isValidDomain) {
+      return 'Only emails from Gmail, Outlook, Hotmail, Yahoo, etc. are allowed';
+    }
+
+    return null;
+  }
+
+  static String? validateOTP(String? value) {
+    final otp = value?.trim() ?? '';
+
+    if (otp.isEmpty) {
+      return 'Please enter the OTP';
+    }
+    final isNumeric = RegExp(r'^\d+$').hasMatch(otp);
+    if (!isNumeric) {
+      return 'OTP must contain only digits';
+    }
+    if (otp.length != 6) {
+      return 'OTP must be exactly 6 digits';
+    }
+
     return null;
   }
 
