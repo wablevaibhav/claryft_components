@@ -13,6 +13,7 @@ class AppValidations {
       'msn.com',
       'mail.com',
       'protonmail.com',
+      'yopmail.com',
     ];
     if (email.isEmpty) {
       return 'Please enter your email address';
