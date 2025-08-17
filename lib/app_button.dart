@@ -52,16 +52,13 @@ class _AppButtonState extends State<AppButton> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveOnTap =
-        (widget.disabled || widget.loading) ? null : widget.onPressed;
+    final effectiveOnTap = (widget.disabled || widget.loading) ? null : widget.onPressed;
 
     final baseColor = widget.color ?? AppColors.primaryColor;
 
     final bgColor = () {
       if (widget.disabled) {
-        return widget.outlined
-            ? AppColors.transparentColor
-            : widget.disabledColor ?? AppColors.greyColor;
+        return widget.outlined ? AppColors.transparentColor : widget.disabledColor ?? AppColors.greyColor;
       }
       if (hovering) {
         return darken(baseColor, 0.1);
@@ -78,40 +75,30 @@ class _AppButtonState extends State<AppButton> {
 
     final effectiveTextColor = () {
       if (widget.disabled || widget.outlined) {
-        return widget.disabledTextColor ??
-            (widget.outlined ? AppColors.blackColor : AppColors.whiteColor);
+        return widget.disabledTextColor ?? (widget.outlined ? AppColors.blackColor : AppColors.whiteColor);
       }
-      return widget.textColor ??
-          (widget.outlined ? borderColor : AppColors.whiteColor);
+      return widget.textColor ?? (widget.outlined ? borderColor : AppColors.whiteColor);
     }();
 
     Widget buildLoadingContent() {
       final loadingIndicator = SizedBox(
         width: 16,
         height: 16,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor),
-        ),
+        child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor)),
       );
 
-      if (widget.loadingText != null &&
-          widget.loadingText?.isNotEmpty == true) {
+      if (widget.loadingText != null && widget.loadingText?.isNotEmpty == true) {
         return Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            loadingIndicator,
+            UIHelpers.tinySpace,
             Text(
               widget.loadingText ?? "",
               style:
-                  widget.loadingTextStyle ??
-                  AppTypography.hint.copyWith(
-                    color: effectiveTextColor,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  widget.loadingTextStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
             ),
-            UIHelpers.tinySpace,
-            loadingIndicator,
           ],
         );
       } else {
@@ -124,23 +111,12 @@ class _AppButtonState extends State<AppButton> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (widget.prefixIcon != null) ...[
-            widget.prefixIcon!,
-            UIHelpers.tinySpace,
-          ],
+          if (widget.prefixIcon != null) ...[widget.prefixIcon!, UIHelpers.tinySpace],
           Text(
             widget.text,
-            style:
-                widget.titleStyle ??
-                AppTypography.hint.copyWith(
-                  color: effectiveTextColor,
-                  fontWeight: FontWeight.w600,
-                ),
+            style: widget.titleStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
           ),
-          if (widget.suffixIcon != null) ...[
-            UIHelpers.tinySpace,
-            widget.suffixIcon!,
-          ],
+          if (widget.suffixIcon != null) ...[UIHelpers.tinySpace, widget.suffixIcon!],
         ],
       );
     }
@@ -154,16 +130,11 @@ class _AppButtonState extends State<AppButton> {
         child: Container(
           height: widget.height,
           width: widget.width,
-          padding:
-              widget.padding ??
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.circular(12),
-            border:
-                widget.outlined
-                    ? Border.all(color: borderColor, width: 0.3)
-                    : null,
+            border: widget.outlined ? Border.all(color: borderColor, width: 0.3) : null,
           ),
           child: widget.loading ? buildLoadingContent() : buildContent(),
         ),
