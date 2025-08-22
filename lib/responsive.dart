@@ -11,11 +11,11 @@ class Responsive extends StatelessWidget {
   final Widget tablet;
   final Widget desktop;
 
-  const Responsive({super.key, required this.mobile, required this.tablet, required this.desktop});
+  const Responsive({required Key key, required this.mobile, required this.tablet, required this.desktop}) : super(key: key);
 
-  static bool isMobileSize(BuildContext context) => isMobile(context);
-  static bool isTabletSize(BuildContext context) => isTablet(context);
-  static bool isDesktopSize(BuildContext context) => isDesktop(context);
+  static bool isMobileSize() => _currentSize == ResponsiveSize.mobile;
+  static bool isTabletSize() => _currentSize == ResponsiveSize.tablet;
+  static bool isDesktopSize() => _currentSize == ResponsiveSize.desktop;
 
   static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < tabletWidth;
 
@@ -31,6 +31,18 @@ class Responsive extends StatelessWidget {
       return ResponsiveSize.tablet;
     } else {
       return ResponsiveSize.desktop;
+    }
+  }
+
+  static ResponsiveSize _currentSize = ResponsiveSize.desktop;
+
+  static void update(BuildContext context) {
+    if (isMobile(context)) {
+      _currentSize = ResponsiveSize.mobile;
+    } else if (isTablet(context)) {
+      _currentSize = ResponsiveSize.tablet;
+    } else {
+      _currentSize = ResponsiveSize.desktop;
     }
   }
 
