@@ -2,9 +2,10 @@ import 'package:intl/intl.dart';
 
 class DateTimeFormatting {
   // Format: dd MMM yyyy hh:mm a (e.g., 08 Jun 2024 02:30 PM)
-  static String formatActive(DateTime date) {
+  static String formatActive(String date) {
     try {
-      return DateFormat('dd MMM yyyy hh:mm a').format(date);
+      final parsedDate = DateTime.parse(date);
+      return DateFormat('dd MMM yyyy hh:mm a').format(parsedDate);
     } catch (e) {
       return '';
     }

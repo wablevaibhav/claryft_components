@@ -43,7 +43,7 @@ class MainScaffold extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar:
-          Responsive.isMobileSize(context)
+          Responsive.isMobileSize()
               ? NavigationBar(
                 destinations:
                     menuItems.map((item) {
