@@ -49,3 +49,4 @@ export 'theme/custom_popup_menu_theme.dart';
 export 'theme/custom_dialog_theme.dart';
 export 'theme/custom_radio_theme.dart';
 export 'package:hugeicons/hugeicons.dart';
+export 'semantics_extensions.dart';
