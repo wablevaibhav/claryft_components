@@ -1,9 +1,11 @@
 import 'package:claryft_components/claryft_components.dart';
 import 'package:example/config/router/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SemanticsBinding.instance.ensureSemantics();
   runApp(const MyApp());
 }
 

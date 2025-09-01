@@ -28,8 +28,16 @@ class MainScaffold extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Claryft', style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white)),
-                Text('Components', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70)),
+                Text(
+                  key: key?.withSuffix('app_logo_text'),
+                  'Claryft',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
+                ).withSemantics(),
+                Text(
+                  key: key?.withSuffix('app_logo_subtext'),
+                  'Components',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+                ).withSemantics(),
               ],
             ),
           ),
@@ -41,6 +49,7 @@ class MainScaffold extends StatelessWidget {
     );
 
     return Scaffold(
+      key: key?.withSuffix('main_scaffold'),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar:
           Responsive.isMobileSize()
@@ -68,7 +77,12 @@ class MainScaffold extends StatelessWidget {
               ? null
               : AppBar(
                 centerTitle: false,
-                title: Text(selectedRoute.name, style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black)),
+                title:
+                    Text(
+                      key: key?.withSuffix('app_bar_title'),
+                      selectedRoute.name,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black),
+                    ).withSemantics(),
                 backgroundColor: Colors.white,
               ),
       drawer: isDesktop ? null : buildSidebar(),
@@ -84,10 +98,12 @@ class MainScaffold extends StatelessWidget {
                         if (isDesktop)
                           SliverAppBar(
                             pinned: true,
-                            title: Text(
-                              selectedRoute.name,
-                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black),
-                            ),
+                            title:
+                                Text(
+                                  key: key?.withSuffix('sliver_app_bar_title'),
+                                  selectedRoute.name,
+                                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black),
+                                ).withSemantics(),
                           ),
                         SliverToBoxAdapter(child: body),
                       ],
@@ -98,10 +114,12 @@ class MainScaffold extends StatelessWidget {
                         if (isDesktop)
                           AppBar(
                             centerTitle: false,
-                            title: Text(
-                              selectedRoute.name,
-                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black),
-                            ),
+                            title:
+                                Text(
+                                  key: key?.withSuffix('app_bar_title'),
+                                  selectedRoute.name,
+                                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black),
+                                ).withSemantics(),
                           ),
                         Expanded(child: body),
                       ],
@@ -117,11 +135,24 @@ class MainScaffold extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: isSelected ? AppColors.primaryColor : null),
       child: ListTile(
-        leading: Icon(item.icon, color: Colors.white),
-        title: Text(
-          item.title,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: isSelected ? Colors.white : Colors.white70),
+        key: key?.withSuffix('menu_item_${item.title.toLowerCase()}'),
+        leading: Icon(key: key?.withSuffix('menu_item_icon'), item.icon, color: Colors.white).withSemantics(
+          label: item.title,
+          isButton: true,
+          onTap: () {
+            if (onMenuTap != null) {
+              onMenuTap!(item.route);
+            } else {
+              context.go(item.route);
+            }
+          },
         ),
+        title:
+            Text(
+              key: key?.withSuffix('menu_item_${item.title.toLowerCase()}'),
+              item.title,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: isSelected ? Colors.white : Colors.white70),
+            ).withSemantics(),
         onTap: () {
           if (onMenuTap != null) {
             onMenuTap!(item.route);

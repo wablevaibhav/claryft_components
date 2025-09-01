@@ -10,6 +10,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
+      key: const ValueKey('dashboard_page'),
       selectedRoute: AppRoute.dashboard,
       onMenuTap: (route) {
         if (route != AppRoute.dashboard.path) {
@@ -22,30 +23,44 @@ class DashboardPage extends StatelessWidget {
           child: Column(
             children: [
               ElevatedButton(
+                key: const ValueKey('go_to_example_page_button'),
                 onPressed: () {},
                 child: Text(
                   'Go to Example Page',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.whiteColor),
                 ),
-              ),
+              ).withButtonSemantics(),
               Gap(12),
-              OutlinedButton(onPressed: () {}, child: Text('Go to Example Page', style: Theme.of(context).textTheme.bodySmall)),
+              OutlinedButton(
+                key: const ValueKey('go_to_example_page_button'),
+                onPressed: () {},
+                child: Text('Go to Example Page', style: Theme.of(context).textTheme.bodySmall),
+              ).withButtonSemantics(),
               Gap(12),
-              TextField(decoration: InputDecoration(labelText: 'Enter text', hintText: 'Type something...')),
+              TextField(
+                key: const ValueKey('text_field'),
+                decoration: InputDecoration(labelText: 'Enter text', hintText: 'Type something...'),
+              ).withSemantics(),
               Gap(12),
               TextFormField(
+                key: const ValueKey('name_field'),
                 decoration: InputDecoration(
                   labelText: 'Enter your name',
                   hintText: 'John Doe',
 
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
                 ),
-              ),
+              ).withSemantics(),
               Gap(12),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text('This is a card widget', style: Theme.of(context).textTheme.bodyMedium),
+                  child:
+                      Text(
+                        key: const ValueKey('card_text'),
+                        'This is a card widget',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ).withSemantics(),
                 ),
               ),
 
@@ -61,18 +76,22 @@ class DashboardPage extends StatelessWidget {
                               padding: const EdgeInsets.all(16.0),
                               height: 400,
                               child: Center(
-                                child: Text(
-                                  'This is a bottom sheet',
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
-                                ),
+                                child:
+                                    Text(
+                                      key: const ValueKey('bottom_sheet_text'),
+                                      'This is a bottom sheet',
+                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                                    ).withSemantics(),
                               ),
                             ),
                       );
                     },
-                    child: Text(
-                      'Click Me',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.primaryColor),
-                    ),
+                    child:
+                        Text(
+                          key: const ValueKey('show_bottom_sheet_button'),
+                          'Click Me',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.primaryColor),
+                        ).withSemantics(),
                   );
                 },
               ),
@@ -80,21 +99,53 @@ class DashboardPage extends StatelessWidget {
               Divider(color: AppColors.greyColor.withValues(alpha: 0.6), thickness: 1),
               Gap(12),
               ExpansionTile(
-                title: Text('Expansion Tile', style: Theme.of(context).textTheme.headlineSmall),
+                key: const ValueKey('expansion_tile'),
+                title:
+                    Text(
+                      key: const ValueKey('expansion_tile_title'),
+                      'Expansion Tile',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ).withSemantics(),
                 children: [
                   ListTile(
-                    title: Text('Item 1', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor)),
-                  ),
+                    key: const ValueKey('expansion_tile_item_1'),
+                    title:
+                        Text(
+                          key: const ValueKey('expansion_tile_item_1'),
+                          'Item 1',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                        ).withSemantics(),
+                  ).withSemantics(),
                   ListTile(
-                    title: Text('Item 2', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor)),
-                  ),
+                    key: const ValueKey('expansion_tile_item_2'),
+                    title:
+                        Text(
+                          key: const ValueKey('expansion_tile_item_2'),
+                          'Item 2',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                        ).withSemantics(),
+                  ).withSemantics(),
                   ListTile(
-                    title: Text('Item 3', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor)),
-                  ),
+                    key: const ValueKey('expansion_tile_item_3'),
+                    title:
+                        Text(
+                          'Item 3',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                        ).withSemantics(),
+                  ).withSemantics(),
                 ],
-              ),
+              ).withSemantics(),
               Gap(12),
-              Tooltip(message: 'This is a tooltip', child: Text('Hover over me', style: Theme.of(context).textTheme.bodyMedium)),
+              Tooltip(
+                key: const ValueKey('tooltip'),
+                message: 'This is a tooltip',
+                child:
+                    Text(
+                      key: const ValueKey('tooltip_text'),
+                      'Hover over me',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ).withSemantics(),
+              ).withSemantics(),
             ],
           ),
         ),
