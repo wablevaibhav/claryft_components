@@ -29,13 +29,13 @@ class DashboardPage extends StatelessWidget {
                   'Go to Example Page',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.whiteColor),
                 ),
-              ).withButtonSemantics(),
+              ).withSemantics(),
               Gap(12),
               OutlinedButton(
                 key: const ValueKey('go_to_example_page_button'),
                 onPressed: () {},
                 child: Text('Go to Example Page', style: Theme.of(context).textTheme.bodySmall),
-              ).withButtonSemantics(),
+              ).withSemantics(),
               Gap(12),
               TextField(
                 key: const ValueKey('text_field'),

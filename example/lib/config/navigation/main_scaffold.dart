@@ -136,17 +136,11 @@ class MainScaffold extends StatelessWidget {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: isSelected ? AppColors.primaryColor : null),
       child: ListTile(
         key: key?.withSuffix('menu_item_${item.title.toLowerCase()}'),
-        leading: Icon(key: key?.withSuffix('menu_item_icon'), item.icon, color: Colors.white).withSemantics(
-          label: item.title,
-          isButton: true,
-          onTap: () {
-            if (onMenuTap != null) {
-              onMenuTap!(item.route);
-            } else {
-              context.go(item.route);
-            }
-          },
-        ),
+        leading: Icon(
+          key: key?.withSuffix('menu_item_icon'),
+          item.icon,
+          color: Colors.white,
+        ).withSemantics(label: item.title, isButton: true),
         title:
             Text(
               key: key?.withSuffix('menu_item_${item.title.toLowerCase()}'),
