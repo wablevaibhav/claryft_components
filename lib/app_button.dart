@@ -1,6 +1,4 @@
-import 'package:claryft_components/app_colors.dart';
-import 'package:claryft_components/app_typography.dart';
-import 'package:claryft_components/ui_helpers.dart';
+import 'package:claryft_components/claryft_components.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatefulWidget {
@@ -84,7 +82,12 @@ class _AppButtonState extends State<AppButton> {
       final loadingIndicator = SizedBox(
         width: 16,
         height: 16,
-        child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor)),
+        child:
+            CircularProgressIndicator(
+              key: widget.key?.withSuffix("_loading_indicator"),
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor),
+            ).withSemantics(),
       );
 
       if (widget.loadingText != null && widget.loadingText?.isNotEmpty == true) {
@@ -95,10 +98,11 @@ class _AppButtonState extends State<AppButton> {
             loadingIndicator,
             UIHelpers.tinySpace,
             Text(
+              key: widget.key?.withSuffix("_loading_text"),
               widget.loadingText ?? "",
               style:
                   widget.loadingTextStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
-            ),
+            ).withSemantics(),
           ],
         );
       } else {
@@ -113,33 +117,37 @@ class _AppButtonState extends State<AppButton> {
         children: [
           if (widget.prefixIcon != null) ...[widget.prefixIcon!, UIHelpers.tinySpace],
           Text(
+            key: widget.key?.withSuffix("_text"),
             widget.text,
             style: widget.titleStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
-          ),
+          ).withSemantics(),
           if (widget.suffixIcon != null) ...[UIHelpers.tinySpace, widget.suffixIcon!],
         ],
       );
     }
 
     return MouseRegion(
+      key: widget.key?.withSuffix("_mouse_region"),
       onEnter: (_) => setState(() => hovering = true),
       onExit: (_) => setState(() => hovering = false),
-      child: InkWell(
-        onTap: effectiveOnTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          height: widget.height,
-          width: widget.width,
-          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(12),
-            border: widget.outlined ? Border.all(color: borderColor, width: 0.3) : null,
-          ),
-          child: widget.loading ? buildLoadingContent() : buildContent(),
-        ),
-      ),
-    );
+      child:
+          InkWell(
+            key: widget.key?.withSuffix("_inkwell"),
+            onTap: effectiveOnTap,
+            borderRadius: BorderRadius.circular(8),
+            child: Container(
+              height: widget.height,
+              width: widget.width,
+              padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(12),
+                border: widget.outlined ? Border.all(color: borderColor, width: 0.3) : null,
+              ),
+              child: widget.loading ? buildLoadingContent() : buildContent(),
+            ),
+          ).withSemantics(),
+    ).withSemantics();
   }
 
   Color darken(Color color, [double amount = .1]) {

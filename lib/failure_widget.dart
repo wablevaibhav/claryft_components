@@ -7,18 +7,16 @@ class FailureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: key?.withSuffix("_inkwell"),
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.errorColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
+        decoration: BoxDecoration(color: AppColors.errorColor, borderRadius: BorderRadius.circular(8)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.error, color: AppColors.whiteColor),
+              Icon(key: key?.withSuffix("_icon"), Icons.error, color: AppColors.whiteColor).withSemantics(),
               UIHelpers.smallSpace,
               Expanded(
                 child: Column(
@@ -26,20 +24,16 @@ class FailureWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
+                      key: key?.withSuffix("_oops_text"),
                       "Oops!",
-                      style: AppTypography.hint.copyWith(
-                        color: AppColors.whiteColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                      style: AppTypography.hint.copyWith(color: AppColors.whiteColor, fontWeight: FontWeight.bold),
+                    ).withSemantics(),
                     UIHelpers.smallSpace,
                     Text(
+                      key: key?.withSuffix("_description_text"),
                       "There was an error retrieving this resource. click here to try again",
-                      style: AppTypography.small.copyWith(
-                        color: AppColors.whiteColor,
-                        overflow: TextOverflow.clip,
-                      ),
-                    ),
+                      style: AppTypography.small.copyWith(color: AppColors.whiteColor, overflow: TextOverflow.clip),
+                    ).withSemantics(),
                   ],
                 ),
               ),
@@ -47,6 +41,6 @@ class FailureWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ).withSemantics();
   }
 }

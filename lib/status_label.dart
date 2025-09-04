@@ -43,13 +43,18 @@ class StatusLabel extends StatelessWidget {
     final fg = textColor ?? defaultTextColors[type]!;
 
     return Container(
+      key: key?.withSuffix("_container"),
       padding: padding,
       decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(16)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[Icon(icon, color: fg, size: 14), const Gap(4)],
-          Text(text, style: AppTypography.hint.copyWith(color: fg, fontWeight: FontWeight.w500)),
+          Text(
+            key: key?.withSuffix("_text"),
+            text,
+            style: AppTypography.hint.copyWith(color: fg, fontWeight: FontWeight.w500),
+          ).withSemantics(),
         ],
       ),
     );

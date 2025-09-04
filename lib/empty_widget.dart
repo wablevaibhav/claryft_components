@@ -15,12 +15,17 @@ class EmptyStateWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          icon ?? Icon(Icons.error_outline_outlined),
+          icon ?? Icon(key: key?.withSuffix("_icon"), Icons.error_outline_outlined).withSemantics(),
           UIHelpers.smallSpace,
-          Text(message, textAlign: TextAlign.center, style: AppTypography.small.copyWith(color: AppColors.blackColor)),
+          Text(
+            key: key?.withSuffix("_message"),
+            message,
+            textAlign: TextAlign.center,
+            style: AppTypography.small.copyWith(color: AppColors.blackColor),
+          ).withSemantics(),
           if (buttonText != null && onButtonPressed != null) ...[
             UIHelpers.smallSpace,
-            AppButton(onPressed: onButtonPressed, text: buttonText ?? ""),
+            AppButton(key: key?.withSuffix("_button"), onPressed: onButtonPressed, text: buttonText ?? ""),
           ],
         ],
       ),

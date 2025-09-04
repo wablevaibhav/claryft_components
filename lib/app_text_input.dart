@@ -1,5 +1,6 @@
 import 'package:claryft_components/app_colors.dart';
 import 'package:claryft_components/app_typography.dart';
+import 'package:claryft_components/claryft_components.dart';
 import 'package:claryft_components/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -139,14 +140,14 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
       children: [
         if (widget.label != null) ...[
           Text(
+            key: widget.key?.withSuffix("_label_text"),
             widget.label ?? "",
-            style:
-                widget.labelTextStyle ??
-                AppTypography.small.copyWith(fontWeight: FontWeight.w500),
-          ),
+            style: widget.labelTextStyle ?? AppTypography.small.copyWith(fontWeight: FontWeight.w500),
+          ).withSemantics(),
           UIHelpers.tinySpace,
         ],
         FormField<String>(
+          key: widget.key?.withSuffix("_form_field"),
           initialValue: widget.controller?.text,
           autovalidateMode: widget.autovalidateMode,
           validator: (value) {
@@ -160,6 +161,7 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
           },
           builder: (FormFieldState<String> field) {
             return Container(
+              key: widget.key?.withSuffix("_container"),
               width: widget.width,
               decoration: BoxDecoration(
                 color: !widget.enabled ? AppColors.lightGreyColor : null,
@@ -172,114 +174,87 @@ class _ClaryftInputFieldState extends State<ClaryftInputField> {
                           ? widget.borderColor ?? AppColors.transparentColor
                           : (errorText != null && errorText?.isNotEmpty == true)
                           ? AppColors.errorColor
-                          : widget.borderColor ??
-                              (isFocused
-                                  ? AppColors.primaryColor
-                                  : AppColors.darkGreyColor),
+                          : widget.borderColor ?? (isFocused ? AppColors.primaryColor : AppColors.darkGreyColor),
                 ),
               ),
               child: SizedBox(
                 height: widget.height,
                 child: Row(
                   children: [
-                    if (prefixIcon != null) ...[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: prefixIcon,
-                      ),
-                    ],
+                    if (prefixIcon != null) ...[Padding(padding: const EdgeInsets.only(left: 10), child: prefixIcon)],
                     Expanded(
-                      child: TextFormField(
-                        controller: widget.controller,
-                        initialValue:
-                            widget.controller == null
-                                ? widget.initialValue
-                                : null,
-                        keyboardType: widget.keyboardType,
-                        obscureText:
-                            widget.isPasswordField
-                                ? _obscureText
-                                : widget.obscureText,
-                        enabled: widget.enabled,
-                        autocorrect: widget.autocorrect,
-                        enableSuggestions: widget.enableSuggestions,
-                        focusNode: _focusNode,
-                        autofocus: widget.autoFocus,
-                        cursorColor:
-                            widget.cursorColor ?? AppColors.primaryColor,
-                        ignorePointers: widget.ignorePointers,
-                        inputFormatters: widget.inputFormatters,
-                        maxLength: widget.maxLength,
-                        maxLines: widget.maxLines ?? 1,
-                        minLines: widget.minLines,
-                        readOnly: widget.readOnly,
-                        showCursor: widget.showCursor,
-                        textInputAction: widget.textInputAction,
-                        onFieldSubmitted: widget.onSubmittedAction,
-
-                        decoration: InputDecoration(
-                          hintText: widget.hint,
-                          hintStyle:
-                              widget.hintStyle ??
-                              AppTypography.hint.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.shadowColor,
-                              ),
-                          border: InputBorder.none,
-                          contentPadding:
-                              widget.contentPadding ??
-                              const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 14,
-                              ),
-                          isDense: widget.isDense ?? true,
-                          suffixIcon:
-                              widget.isPasswordField
-                                  ? suffixIcon
-                                  : (errorText != null && errorText!.isNotEmpty
-                                      ? widget.suffixErrorIcon ??
-                                          const Icon(
-                                            Icons.error_outline_rounded,
-                                            color: AppColors.errorColor,
-                                            size: 20,
-                                          )
-                                      : suffixIcon),
-                        ),
-                        onChanged: (value) {
-                          field.didChange(value);
-                          widget.onChanged?.call(value);
-                          final error = widget.validator?.call(value);
-                          setState(() {
-                            errorText = error;
-                          });
-                        },
-                        onTap: () {
-                          if (!widget.enabled) return;
-                          setState(() {
-                            isFocused = true;
-                          });
-                        },
-                        onEditingComplete: () {
-                          setState(() {
-                            isFocused = false;
-                          });
-                        },
-                      ),
+                      child:
+                          TextFormField(
+                            key: widget.textFieldKey ?? widget.key?.withSuffix("_text_form_field"),
+                            controller: widget.controller,
+                            initialValue: widget.controller == null ? widget.initialValue : null,
+                            keyboardType: widget.keyboardType,
+                            obscureText: widget.isPasswordField ? _obscureText : widget.obscureText,
+                            enabled: widget.enabled,
+                            autocorrect: widget.autocorrect,
+                            enableSuggestions: widget.enableSuggestions,
+                            focusNode: _focusNode,
+                            autofocus: widget.autoFocus,
+                            cursorColor: widget.cursorColor ?? AppColors.primaryColor,
+                            ignorePointers: widget.ignorePointers,
+                            inputFormatters: widget.inputFormatters,
+                            maxLength: widget.maxLength,
+                            maxLines: widget.maxLines ?? 1,
+                            minLines: widget.minLines,
+                            readOnly: widget.readOnly,
+                            showCursor: widget.showCursor,
+                            textInputAction: widget.textInputAction,
+                            onFieldSubmitted: widget.onSubmittedAction,
+                            decoration: InputDecoration(
+                              hintText: widget.hint,
+                              hintStyle:
+                                  widget.hintStyle ??
+                                  AppTypography.hint.copyWith(fontWeight: FontWeight.w400, color: AppColors.shadowColor),
+                              border: InputBorder.none,
+                              contentPadding: widget.contentPadding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                              isDense: widget.isDense ?? true,
+                              suffixIcon:
+                                  widget.isPasswordField
+                                      ? suffixIcon
+                                      : (errorText != null && errorText!.isNotEmpty
+                                          ? widget.suffixErrorIcon ??
+                                              const Icon(Icons.error_outline_rounded, color: AppColors.errorColor, size: 20)
+                                          : suffixIcon),
+                            ),
+                            onChanged: (value) {
+                              field.didChange(value);
+                              widget.onChanged?.call(value);
+                              final error = widget.validator?.call(value);
+                              setState(() {
+                                errorText = error;
+                              });
+                            },
+                            onTap: () {
+                              if (!widget.enabled) return;
+                              setState(() {
+                                isFocused = true;
+                              });
+                            },
+                            onEditingComplete: () {
+                              setState(() {
+                                isFocused = false;
+                              });
+                            },
+                          ).withSemantics(),
                     ),
                   ],
                 ),
               ),
-            );
+            ).withSemantics();
           },
         ),
         if (errorText != null && errorText!.isNotEmpty) ...[
           UIHelpers.tinySpace,
           Text(
+            key: widget.key?.withSuffix("_error_text"),
             errorText!,
-            style:
-                widget.errorTextStyle ??
-                AppTypography.smallHint.copyWith(color: AppColors.errorColor),
-          ),
+            style: widget.errorTextStyle ?? AppTypography.smallHint.copyWith(color: AppColors.errorColor),
+          ).withSemantics(),
         ],
       ],
     );
