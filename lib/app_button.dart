@@ -1,12 +1,12 @@
 import 'package:claryft_components/claryft_components.dart';
 import 'package:flutter/material.dart';
 
-class AppButton extends StatefulWidget {
+class AppButton extends StatelessWidget {
   final String text;
   final String? loadingText;
   final TextStyle? titleStyle;
   final TextStyle? loadingTextStyle;
-  final void Function()? onPressed;
+  final VoidCallback? onPressed;
   final EdgeInsets? padding;
   final bool loading;
   final bool outlined;
@@ -42,117 +42,84 @@ class AppButton extends StatefulWidget {
   });
 
   @override
-  State<AppButton> createState() => _AppButtonState();
-}
-
-class _AppButtonState extends State<AppButton> {
-  bool hovering = false;
-
-  @override
   Widget build(BuildContext context) {
-    final effectiveOnTap = (widget.disabled || widget.loading) ? null : widget.onPressed;
+    final effectiveOnTap = (disabled || loading) ? null : onPressed;
+    final baseColor = color ?? AppColors.primaryColor;
 
-    final baseColor = widget.color ?? AppColors.primaryColor;
-
-    final bgColor = () {
-      if (widget.disabled) {
-        return widget.outlined ? AppColors.transparentColor : widget.disabledColor ?? AppColors.greyColor;
-      }
-      if (hovering) {
-        return darken(baseColor, 0.1);
-      }
-      return widget.outlined ? AppColors.transparentColor : baseColor;
-    }();
-
-    final borderColor = () {
-      if (widget.disabled || widget.outlined) {
-        return widget.disabledColor ?? AppColors.greyColor;
-      }
-      return baseColor;
-    }();
-
-    final effectiveTextColor = () {
-      if (widget.disabled || widget.outlined) {
-        return widget.disabledTextColor ?? (widget.outlined ? AppColors.blackColor : AppColors.whiteColor);
-      }
-      return widget.textColor ?? (widget.outlined ? borderColor : AppColors.whiteColor);
-    }();
+    final effectiveTextColor =
+        disabled
+            ? disabledTextColor ?? (outlined ? AppColors.greyColor : AppColors.whiteColor)
+            : textColor ?? (outlined ? baseColor : AppColors.whiteColor);
 
     Widget buildLoadingContent() {
-      final loadingIndicator = SizedBox(
+      final loader = SizedBox(
         width: 16,
         height: 16,
         child:
             CircularProgressIndicator(
-              key: widget.key?.withSuffix("_loading_indicator"),
+              key: key?.withSuffix("loading_indicator"),
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(effectiveTextColor),
             ).withSemantics(),
       );
 
-      if (widget.loadingText != null && widget.loadingText?.isNotEmpty == true) {
+      if (loadingText != null && loadingText!.isNotEmpty) {
         return Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            loadingIndicator,
+            loader,
             UIHelpers.tinySpace,
             Text(
-              key: widget.key?.withSuffix("_loading_text"),
-              widget.loadingText ?? "",
-              style:
-                  widget.loadingTextStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
+              key: key?.withSuffix("loading_text"),
+              loadingText!,
+              style: loadingTextStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w400),
             ).withSemantics(),
           ],
         );
-      } else {
-        return loadingIndicator;
       }
+      return loader;
     }
 
     Widget buildContent() {
       return Row(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (widget.prefixIcon != null) ...[widget.prefixIcon!, UIHelpers.tinySpace],
+          if (prefixIcon != null) ...[prefixIcon!, UIHelpers.tinySpace],
           Text(
-            key: widget.key?.withSuffix("_text"),
-            widget.text,
-            style: widget.titleStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
+            key: key?.withSuffix("text"),
+            text,
+            style: titleStyle ?? AppTypography.hint.copyWith(color: effectiveTextColor, fontWeight: FontWeight.w600),
           ).withSemantics(),
-          if (widget.suffixIcon != null) ...[UIHelpers.tinySpace, widget.suffixIcon!],
+          if (suffixIcon != null) ...[UIHelpers.tinySpace, suffixIcon!],
         ],
       );
     }
 
-    return MouseRegion(
-      key: widget.key?.withSuffix("_mouse_region"),
-      onEnter: (_) => setState(() => hovering = true),
-      onExit: (_) => setState(() => hovering = false),
-      child:
-          InkWell(
-            key: widget.key?.withSuffix("_inkwell"),
-            onTap: effectiveOnTap,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              height: widget.height,
-              width: widget.width,
-              padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(12),
-                border: widget.outlined ? Border.all(color: borderColor, width: 0.3) : null,
-              ),
-              child: widget.loading ? buildLoadingContent() : buildContent(),
-            ),
-          ).withSemantics(),
-    ).withSemantics();
-  }
+    final child = loading ? buildLoadingContent() : buildContent();
 
-  Color darken(Color color, [double amount = .1]) {
-    final hsl = HSLColor.fromColor(color);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-    return hslDark.toColor();
+    final ButtonStyle style = ButtonStyle(
+      minimumSize: WidgetStateProperty.all(Size(width ?? 64, height ?? 44)),
+      padding: WidgetStateProperty.all(padding ?? const EdgeInsets.symmetric(horizontal: 14, vertical: 12)),
+      foregroundColor: WidgetStateProperty.all(effectiveTextColor),
+      backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (outlined) return AppColors.transparentColor;
+        if (disabled) return disabledColor ?? AppColors.greyColor;
+        return baseColor;
+      }),
+      side:
+          outlined
+              ? WidgetStateProperty.all(
+                BorderSide(color: disabled ? (disabledColor ?? AppColors.greyColor) : baseColor, width: 1),
+              )
+              : null,
+      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+    );
+
+    final button =
+        outlined
+            ? OutlinedButton(key: key?.withSuffix("outlined_button"), onPressed: effectiveOnTap, style: style, child: child)
+            : ElevatedButton(key: key?.withSuffix("elevated_button"), onPressed: effectiveOnTap, style: style, child: child);
+
+    return button.withSemantics();
   }
 }

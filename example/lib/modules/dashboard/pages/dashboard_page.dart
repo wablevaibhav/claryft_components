@@ -31,6 +31,16 @@ class DashboardPage extends StatelessWidget {
                 ),
               ).withSemantics(),
               Gap(12),
+              ClaryftFailureWidget(key: const ValueKey('failure_widget'), onTap: () {}).withSemantics(),
+              Gap(12),
+              ClaryftEmptyWidget(
+                key: const ValueKey('empty_state_widget'),
+                title: 'No Data Available',
+                buttonText: 'Add Data',
+                onButtonPressed: () {},
+                description: 'Please add some data to get started.',
+              ).withSemantics(),
+              Gap(12),
               OutlinedButton(
                 key: const ValueKey('go_to_example_page_button'),
                 onPressed: () {},
@@ -42,15 +52,18 @@ class DashboardPage extends StatelessWidget {
                 decoration: InputDecoration(labelText: 'Enter text', hintText: 'Type something...'),
               ).withSemantics(),
               Gap(12),
-              TextFormField(
-                key: const ValueKey('name_field'),
-                decoration: InputDecoration(
-                  labelText: 'Enter your name',
-                  hintText: 'John Doe',
-
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-                ),
-              ).withSemantics(),
+              ClaryftInputField(
+                key: const ValueKey('claryft_input_field'),
+                label: 'Enter your name',
+                hint: 'John Doe',
+                controller: TextEditingController(),
+                validator: (p0) {
+                  if (p0 == null || p0.isEmpty) {
+                    return 'Name cannot be empty';
+                  }
+                  return null;
+                },
+              ),
               Gap(12),
               Card(
                 child: Padding(
