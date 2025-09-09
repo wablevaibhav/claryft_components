@@ -16,16 +16,16 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      key: key?.withSuffix("_cliprrect"),
+      key: key?.withSuffix("cliprrect"),
       borderRadius: BorderRadius.circular(radius ?? 0),
       child:
           Shimmer.fromColors(
-            key: key?.withSuffix("_shimmer"),
+            key: key?.withSuffix("shimmer"),
             baseColor: baseColor,
             highlightColor: highlightColor,
             child:
                 Container(
-                  key: key?.withSuffix("_container"),
+                  key: key?.withSuffix("container"),
                   width: width,
                   height: height,
                   color: AppColors.whiteColor,

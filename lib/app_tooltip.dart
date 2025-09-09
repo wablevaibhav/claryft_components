@@ -27,11 +27,10 @@ class AppTooltip extends StatelessWidget {
       message: message,
       textStyle: textStyle,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppColors.blackColor.withOpacity(0.9),
+        color: backgroundColor ?? AppColors.blackColor.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(4),
       ),
-      padding:
-          padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       verticalOffset: verticalOffset ?? 16,
       preferBelow: preferBelow ?? true,
       child: child,
