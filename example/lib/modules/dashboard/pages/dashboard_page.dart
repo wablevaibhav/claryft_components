@@ -1,6 +1,6 @@
 import 'package:claryft_components/claryft_components.dart';
-import 'package:example/config/router/app_link.dart';
 import 'package:example/config/navigation/main_scaffold.dart';
+import 'package:example/config/router/app_link.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,11 +27,16 @@ class DashboardPage extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   'Go to Example Page',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.whiteColor),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.whiteColor),
                 ),
               ).withSemantics(),
               Gap(12),
-              ClaryftFailureWidget(key: const ValueKey('failure_widget'), onTap: () {}).withSemantics(),
+              ClaryftFailureWidget(
+                key: const ValueKey('failure_widget'),
+                onTap: () {},
+              ).withSemantics(),
               Gap(12),
               ClaryftEmptyWidget(
                 key: const ValueKey('empty_state_widget'),
@@ -93,7 +98,9 @@ class DashboardPage extends StatelessWidget {
                                     Text(
                                       key: const ValueKey('bottom_sheet_text'),
                                       'This is a bottom sheet',
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
                                     ).withSemantics(),
                               ),
                             ),
@@ -103,7 +110,9 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           key: const ValueKey('show_bottom_sheet_button'),
                           'Click Me',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.primaryColor),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(color: AppColors.primaryColor),
                         ).withSemantics(),
                   );
                 },
@@ -126,7 +135,9 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           key: const ValueKey('expansion_tile_item_1'),
                           'Item 1',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
                         ).withSemantics(),
                   ).withSemantics(),
                   ListTile(
@@ -135,7 +146,9 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           key: const ValueKey('expansion_tile_item_2'),
                           'Item 2',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
                         ).withSemantics(),
                   ).withSemantics(),
                   ListTile(
@@ -143,7 +156,9 @@ class DashboardPage extends StatelessWidget {
                     title:
                         Text(
                           'Item 3',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
                         ).withSemantics(),
                   ).withSemantics(),
                 ],
