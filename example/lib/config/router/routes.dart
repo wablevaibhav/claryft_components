@@ -1,3 +1,4 @@
+import 'package:claryft_components/claryft_components.dart';
 import 'package:example/config/router/app_link.dart';
 import 'package:example/modules/dashboard/pages/dashboard_page.dart';
 import 'package:example/modules/tiles/tiles_page.dart';
@@ -12,7 +13,12 @@ class MenuItem {
   final String route;
   final bool hasNotification;
 
-  MenuItem({required this.icon, required this.title, required this.route, this.hasNotification = false});
+  MenuItem({
+    required this.icon,
+    required this.title,
+    required this.route,
+    this.hasNotification = false,
+  });
 }
 
 List<MenuItem> menuItems = [
@@ -22,7 +28,9 @@ List<MenuItem> menuItems = [
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoute.dashboard.path,
-
+  errorBuilder:
+      (context, state) =>
+          MaintenanceScreen(message: state.error?.message, state: MaintenanceState.notFound404),
   routes: [
     GoRoute(
       path: AppRoute.dashboard.path,

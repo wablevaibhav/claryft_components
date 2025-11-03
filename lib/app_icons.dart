@@ -33,4 +33,7 @@ class AppIcons {
   static const IconData arrowRight = Iconsax.arrow_right_3;
   static const IconData arrowLeft = Iconsax.arrow_left_3;
   static const IconData chevronRight = Iconsax.arrow_right_3;
+  static const IconData noInternet = Iconsax.airplane;
+  static const IconData serverError = Iconsax.cloud_remove;
+  static const IconData warning = Iconsax.warning_2;
 }
