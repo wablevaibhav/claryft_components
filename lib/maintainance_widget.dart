@@ -10,6 +10,7 @@ class MaintenanceScreen extends StatelessWidget {
   final String? message;
   final String? buttonText;
   final ButtonStyle? buttonStyle;
+  final bool? isScaffold;
 
   /// Optional per-state images. If an image is provided for a state it will be
   /// displayed instead of the default icon.
@@ -28,6 +29,7 @@ class MaintenanceScreen extends StatelessWidget {
     this.stateImages,
     this.iconSize = 64,
     this.buttonStyle,
+    this.isScaffold = true,
   });
 
   Widget _buildContent(BuildContext context) {
@@ -136,6 +138,8 @@ class MaintenanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white, body: Center(child: _buildContent(context)));
+    return isScaffold == true
+        ? Scaffold(backgroundColor: Colors.white, body: Center(child: _buildContent(context)))
+        : Center(child: _buildContent(context));
   }
 }
