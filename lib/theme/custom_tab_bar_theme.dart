@@ -5,14 +5,14 @@ class CustomTabBarTheme {
   CustomTabBarTheme._();
 
   // Light Tab Bar Theme
-  static TabBarTheme lightTabBarTheme = TabBarTheme(
+  static TabBarThemeData lightTabBarTheme = TabBarThemeData(
     labelColor: AppColors.primaryColor,
     unselectedLabelColor: AppColors.greyColor,
     indicatorColor: AppColors.primaryColor,
   );
 
   // Dark Tab Bar Theme
-  static TabBarTheme darkTabBarTheme = TabBarTheme(
+  static TabBarThemeData darkTabBarTheme = TabBarThemeData(
     labelColor: AppColors.primaryColor,
     unselectedLabelColor: AppColors.greyColor.withValues(alpha: 0.7),
     indicatorColor: AppColors.primaryColor,

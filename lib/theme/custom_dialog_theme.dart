@@ -5,7 +5,7 @@ class CustomDialogTheme {
   CustomDialogTheme._();
 
   // Light Theme
-  static DialogTheme lightDialogTheme = DialogTheme(
+  static DialogThemeData lightDialogTheme = DialogThemeData(
     backgroundColor: AppColors.whiteColor,
     titleTextStyle: CustomTextTheme.lightTextTheme.titleLarge?.copyWith(color: AppColors.blackColor),
     contentTextStyle: CustomTextTheme.lightTextTheme.bodyMedium?.copyWith(color: AppColors.blackColor),
@@ -13,7 +13,7 @@ class CustomDialogTheme {
   );
 
   // Dark Theme
-  static DialogTheme darkDialogTheme = DialogTheme(
+  static DialogThemeData darkDialogTheme = DialogThemeData(
     backgroundColor: AppColors.blackColor,
     titleTextStyle: CustomTextTheme.darkTextTheme.titleLarge?.copyWith(color: AppColors.whiteColor),
     contentTextStyle: CustomTextTheme.darkTextTheme.bodyMedium?.copyWith(color: AppColors.whiteColor),

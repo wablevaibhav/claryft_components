@@ -5,7 +5,7 @@ class CustomCardTheme {
   CustomCardTheme._();
 
   // Light Card Theme
-  static CardTheme lightCardTheme = CardTheme(
+  static CardThemeData lightCardTheme = CardThemeData(
     color: AppColors.cardColor,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
     shadowColor: AppColors.shadowColor,
@@ -14,7 +14,7 @@ class CustomCardTheme {
   );
 
   // Dark Card Theme
-  static CardTheme darkCardTheme = CardTheme(
+  static CardThemeData darkCardTheme = CardThemeData(
     color: AppColors.blackColor,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
     shadowColor: AppColors.shadowColor,
